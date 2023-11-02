@@ -1,17 +1,4 @@
 <template>
-  <!-- <cover-view class="tab-bar-border"></cover-view>
-  <cover-view v-for="(item, index) in list" :key="index" class="tab-bar-item" @tap="switchTab(index, item.pagePath)">
-    <template v-if="index === 0">
-      <Home />
-    </template><template v-if="index === 1">
-      <Category />
-    </template><template v-if="index === 2">
-      <Cart />
-    </template><template v-if="index === 3">
-      <My />
-    </template>
-    <cover-view :style="{ color: selected === index ? selectedColor : color }">{{ item.text }}</cover-view>
-  </cover-view> -->
   <nut-tabbar unactive-color="#7d7e80" active-color="#edc672" v-model="selected">
     <nut-tabbar-item v-for="(item, index) in list" :tab-title="item.text" :icon="item.icon" @tap="tabSwitch(index,item.pagePath)"> </nut-tabbar-item>
   </nut-tabbar>
