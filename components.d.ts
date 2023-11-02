@@ -8,9 +8,24 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Counter: typeof import('./src/components/counter.vue')['default']
+    MustTasks: typeof import('./src/components/MustTasks.vue')['default']
+    NutAvatar: typeof import('@nutui/nutui-taro')['Avatar']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
+    NutCell: typeof import('@nutui/nutui-taro')['Cell']
+    NutCol: typeof import('@nutui/nutui-taro')['Col']
+    NutCollapse: typeof import('@nutui/nutui-taro')['Collapse']
+    NutCollapseItem: typeof import('@nutui/nutui-taro')['CollapseItem']
+    NutDivider: typeof import('@nutui/nutui-taro')['Divider']
+    NutNavbar: typeof import('@nutui/nutui-taro')['Navbar']
+    NutRate: typeof import('@nutui/nutui-taro')['Rate']
+    NutRow: typeof import('@nutui/nutui-taro')['Row']
+    NutSpace: typeof import('@nutui/nutui-taro')['Space']
     NutTabbar: typeof import('@nutui/nutui-taro')['Tabbar']
     NutTabbarItem: typeof import('@nutui/nutui-taro')['TabbarItem']
+    NutTabPane: typeof import('@nutui/nutui-taro')['TabPane']
+    NutTabs: typeof import('@nutui/nutui-taro')['Tabs']
+    NutTag: typeof import('@nutui/nutui-taro')['Tag']
+    NutTextarea: typeof import('@nutui/nutui-taro')['Textarea']
     NutToast: typeof import('@nutui/nutui-taro')['Toast']
   }
 }
