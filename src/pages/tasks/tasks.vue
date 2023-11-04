@@ -13,7 +13,7 @@ import { ref } from 'vue'
   <nut-cell class="light-orange-cell">
 
     <nut-space :gutter="135">
-      <nut-button shape="square" type="warning" @tap="getChildrenPointsData">
+      <nut-button shape="square" type="warning" @click="goPointSort">
         <Category></Category>
         积分
       </nut-button>
@@ -33,6 +33,17 @@ import { ref } from 'vue'
       </nut-tabs>
     </template>
   </nut-navbar>
+
+  <nut-cell :showIcon="true" :desc="state.date && state.date[0] ? `${state.date[0]}至${state.date[1]}` : '请选择'"
+  style="color: blue;" @click="openSwitch">
+  </nut-cell>
+
+  <nut-calendar v-model="state" :visible="state.isVisible" :default-value="state.date" type="range"
+    :start-date="`2019-12-22`" :is-auto-back-fill="true" :end-date="`2021-01-08`" @close="closeSwitch"
+    @choose="setChooseValue" @select="select">
+  </nut-calendar>
+
+
 
 
 
@@ -122,9 +133,9 @@ import { reactive, ref, toRefs, h } from 'vue';
 import { Category, Find, Cart, My, MoreX } from '@nutui/icons-vue-taro';
 import childrenApi from '../../api/children';
 
-
 const activeNames = ref([1, 2]);
 const value = ref(3); //积分星星
+
 const title = reactive({
   title1: '必做任务',
   title2: '选做任务',
@@ -146,7 +157,29 @@ const onChange = (modelValue, currName, status) => {
 };
 
 
+//date
+const state = reactive({
+  date: ['2019-12-23', '2019-12-26'],
+  isVisible: false,
+});
 
+function openSwitch() {
+  state.isVisible = true;
+
+};
+
+function closeSwitch() {
+  state.isVisible = false;
+};
+
+function setChooseValue(param) {
+  state.date = [...[param[0][3], param[1][3]]];
+};
+function select(param) {
+  console.log(param);
+};
+
+//小导航栏
 const tab1value = ref(0);
 const back = () => {
   console.log('Click Back');
@@ -166,6 +199,16 @@ const changeTab = (tab) => {
 .light-orange-cell {
   background-color: #FFEFD5;
   /* Light orange color */
+}
+
+//date
+.nut-cell__value {
+  flex: initial;
+}
+
+//tab
+.nut-tabs {
+  width: 580px;
 }
 </style>
 

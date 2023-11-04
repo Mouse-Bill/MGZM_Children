@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     Counter: typeof import('./src/components/counter.vue')['default']
     NutAvatar: typeof import('@nutui/nutui-taro')['Avatar']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
+    NutCalendar: typeof import('@nutui/nutui-taro')['Calendar']
     NutCell: typeof import('@nutui/nutui-taro')['Cell']
     NutCol: typeof import('@nutui/nutui-taro')['Col']
     NutCollapse: typeof import('@nutui/nutui-taro')['Collapse']
@@ -18,6 +19,7 @@ declare module '@vue/runtime-core' {
     NutDivider: typeof import('@nutui/nutui-taro')['Divider']
     NutMenu: typeof import('@nutui/nutui-taro')['Menu']
     NutMenuItem: typeof import('@nutui/nutui-taro')['MenuItem']
+
     NutNavbar: typeof import('@nutui/nutui-taro')['Navbar']
     NutPrice: typeof import('@nutui/nutui-taro')['Price']
     NutRate: typeof import('@nutui/nutui-taro')['Rate']

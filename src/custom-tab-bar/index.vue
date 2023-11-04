@@ -1,5 +1,5 @@
 <template>
-  <nut-tabbar unactive-color="#7d7e80" active-color="#edc672" v-model="selected">
+  <nut-tabbar unactive-color="#7d7e80" active-color="#edc672" v-model="selected" v-if="isVisible">
     <nut-tabbar-item v-for="(item, index) in list" :tab-title="item.text" :icon="item.icon" @tap="tabSwitch(index,item.pagePath)"> </nut-tabbar-item>
   </nut-tabbar>
 </template>
@@ -17,7 +17,7 @@ import { IconFont } from '@nutui/icons-vue-taro';
 const store = useStore()
 const selected = computed(() => store.state.selected)
 
-
+const isVisible = true
 
 
 const list = [
