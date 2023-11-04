@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import store from './store'
 import './app.css'
-import { Tabbar, TabbarItem, Navbar, Rate } from '@nutui/nutui-taro';
+import { Tabbar, TabbarItem, Navbar, Rate, Calendar } from '@nutui/nutui-taro';
 import { IconFont } from '@nutui/icons-vue-taro';
 
 const App = createApp({
@@ -11,5 +11,5 @@ const App = createApp({
 
 App.use(store)
 App.use(Tabbar).use(TabbarItem).use(IconFont);
-App.use(Navbar).use(Rate);
+App.use(Navbar).use(Rate).use(Calendar);
 export default App

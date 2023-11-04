@@ -4,8 +4,7 @@ export default defineAppConfig({
     'pages/community/community',
     'pages/mall/mall',
     'pages/mine/mine',
-    'pages/index/index'
-
+    'pages/index/index',
   ],
   tabBar: {
     custom: true,
