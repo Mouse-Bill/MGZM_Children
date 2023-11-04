@@ -4,70 +4,71 @@ import NutUIResolver from '@nutui/nutui-taro/dist/resolver';
 const config = {
   projectName: 'MGZM_Children',
   date: '2023-11-2',
-  designWidth (input) {
+  designWidth(input) {
     if (input?.file?.replace(/\\+/g, '/').indexOf('@nutui') > -1) {
-      return 375
+      return 375;
     }
-    return 750
+    return 750;
   },
   deviceRatio: {
     640: 2.34 / 2,
     750: 1,
     828: 1.81 / 2,
-    375: 2 / 1
+    375: 2 / 1,
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  plugins: ['@tarojs/plugin-html','@tarojs/plugin-http'],
-  defineConstants: {
-  },
+  plugins: ['@tarojs/plugin-html', '@tarojs/plugin-http'],
+  defineConstants: {},
   copy: {
-    patterns: [
-    ],
-    options: {
-    }
+    patterns: [],
+    options: {},
   },
   framework: 'vue3',
   compiler: {
     type: 'webpack5',
-    prebundle: { enable: false }
+    prebundle: { enable: false },
   },
-  sass:{
-    data: `@import "@nutui/nutui-taro/dist/styles/variables.scss";`
+  sass: {
+    data: `@import "@nutui/nutui-taro/dist/styles/variables.scss";`,
   },
   mini: {
     webpackChain(chain) {
-      chain.plugin('unplugin-vue-components').use(Components({
-        resolvers: [NutUIResolver({taro: true})]
-      }))
+      chain.plugin('unplugin-vue-components').use(
+        Components({
+          resolvers: [NutUIResolver({ taro: true })],
+        }),
+      );
     },
     postcss: {
       pxtransform: {
         enable: true,
         config: {
           // selectorBlackList: ['nut-']
-        }
+        },
       },
       url: {
         enable: true,
         config: {
-          limit: 1024 // 设定转换尺寸上限
-        }
+          limit: 1024, // 设定转换尺寸上限
+        },
       },
       cssModules: {
         enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
         config: {
           namingPattern: 'module', // 转换模式，取值为 global/module
-          generateScopedName: '[name]__[local]___[hash:base64:5]'
-        }
-      }
-    }
+          generateScopedName: '[name]__[local]___[hash:base64:5]',
+        },
+      },
+    },
   },
   h5: {
     webpackChain(chain) {
-      chain.plugin('unplugin-vue-components').use(Components({
-        resolvers: [NutUIResolver({taro: true})]
-      }))
+      chain.plugin('unplugin-vue-components').use(
+        Components({
+          resolvers: [NutUIResolver({ taro: true })],
+        }),
+      );
     },
     publicPath: '/',
     staticDirectory: 'static',
@@ -75,23 +76,22 @@ const config = {
     postcss: {
       autoprefixer: {
         enable: true,
-        config: {
-        }
+        config: {},
       },
       cssModules: {
         enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
         config: {
           namingPattern: 'module', // 转换模式，取值为 global/module
-          generateScopedName: '[name]__[local]___[hash:base64:5]'
-        }
-      }
-    }
-  }
-}
+          generateScopedName: '[name]__[local]___[hash:base64:5]',
+        },
+      },
+    },
+  },
+};
 
 module.exports = function (merge) {
   if (process.env.NODE_ENV === 'development') {
-    return merge({}, config, require('./dev'))
+    return merge({}, config, require('./dev'));
   }
-  return merge({}, config, require('./prod'))
-}
+  return merge({}, config, require('./prod'));
+};

@@ -11,7 +11,21 @@
             "list": [
                 {
                     "name": "",
-                    "pathName": "pages/goods/goods",
+                    "pathName": "pages/community/community",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": null
+                },
+                {
+                    "name": "",
+                    "pathName": "pages/index/index",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": null
+                },
+                {
+                    "name": "",
+                    "pathName": "pages/login/login",
                     "query": "",
                     "launchMode": "default",
                     "scene": null
