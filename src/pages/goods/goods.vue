@@ -24,11 +24,12 @@
         />
         <view class="opt_wrap">
           <view class="btn">
-            <nut-icon name="s-follow"></nut-icon>
+            <IconFont name="s-follow"></IconFont>
             <view>收藏</view>
           </view>
           <view class="btn">
-            <nut-icon name="share"></nut-icon>
+            <!-- <nut-icon name="share"></nut-icon> -->
+            <IconFont name="share"></IconFont>
             <view>分享</view>
           </view>
         </view>
@@ -44,6 +45,8 @@
   </template>
   <script>
   import { reactive, toRefs } from "vue";
+  import { IconFont } from '@nutui/icons-vue-taro';
+  import Taro from "@tarojs/taro";
   
   export default {
     name: "GoodsInfo",
