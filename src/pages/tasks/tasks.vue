@@ -131,6 +131,7 @@ import { ref } from 'vue'
 <script setup>
 import { reactive, ref, toRefs, h } from 'vue';
 import { Category, Find, Cart, My, MoreX } from '@nutui/icons-vue-taro';
+import childrenApi from '../../api/children';
 
 const activeNames = ref([1, 2]);
 const value = ref(3); //积分星星
@@ -139,6 +140,16 @@ const title = reactive({
   title1: '必做任务',
   title2: '选做任务',
 });
+
+const child = {
+  u_id: "26adeeee-7994-11ee-b962-0242ac120002"
+}
+
+const getChildrenPointsData = async () => {
+  const res = await childrenApi.getChildrenPoints(child);
+  console.log(res);
+};
+
 const onChange = (modelValue, currName, status) => {
   // currName: 当前操作的 collapse-item 的 name
   // status: true 打开 false 关闭
@@ -179,6 +190,7 @@ const tabTitle = () => {
 const changeTab = (tab) => {
   tab1value.value = tab.paneKey;
 };
+
 
 </script>
 

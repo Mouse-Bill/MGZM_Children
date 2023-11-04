@@ -5,6 +5,7 @@ export default defineAppConfig({
     'pages/mall/mall',
     'pages/mine/mine',
     'pages/index/index',
+    'pages/goods/goods',
   ],
   tabBar: {
     custom: true,
@@ -32,6 +33,10 @@ export default defineAppConfig({
         // selectedIconPath: 'resource/hotest_on.png',
         pagePath: 'pages/mine/mine',
         text: '我的',
+      },
+      {
+        pagePath: 'pages/goods/goods',
+        text: '商品详情',
       },
       // {
       //   // iconPath: 'resource/hotest.png',
