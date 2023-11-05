@@ -5,22 +5,26 @@
   <button @click="count++">count is: {{ count }}</button>
 </template>
 
+<nut-cell :showIcon="true" :desc="state.date && state.date[0] ? `${state.date[0]}至${state.date[1]}` : '请选择'"
+    style="color: blue;" @click="openSwitch"></nut-cell>
+
 <script setup>
 import counter from '../../components/counter.vue'
 import { ref } from 'vue'
 </script> -->
 <template>
-  <nut-cell class="light-orange-cell">
+  <nut-cell class="light-orange-cell" :style="{ '--nut-space-gap': '190px' }">
 
-    <nut-space :gutter="135">
-      <nut-button shape="square" type="warning" @click="goPointSort">
+    
+    <nut-space >
+      <nut-button shape="square" type="warning" @click="getChildrenTaskList(child)">
         <Category></Category>
         积分
       </nut-button>
 
       <nut-button shape="square" type="warning">
         <My></My>
-        教学资源库
+        资源
       </nut-button>
     </nut-space>
   </nut-cell>
@@ -34,8 +38,22 @@ import { ref } from 'vue'
     </template>
   </nut-navbar>
 
-  <nut-cell :showIcon="true" :desc="state.date && state.date[0] ? `${state.date[0]}至${state.date[1]}` : '请选择'"
-  style="color: blue;" @click="openSwitch">
+  <nut-cell style="padding: 0;">
+    <nut-row>
+      <nut-col :span="8">
+        <nut-cell :showIcon="true" :desc="state.date && state.date[0] ? `${state.date[0]}` : '请选择'" style="color: blue;"
+          @click="openSwitch"></nut-cell>
+      </nut-col>
+      <nut-col :span="8">
+        <nut-cell title="查看历史任务" @click="click" ></nut-cell>
+
+      </nut-col>
+      <nut-col :span="8">
+        <nut-cell :showIcon="true" :desc="state.date && state.date[0] ? `${state.date[1]}` : '请选择'" style="color: blue;"
+          @click="openSwitch"></nut-cell>
+      </nut-col>
+    </nut-row>
+
   </nut-cell>
 
   <nut-calendar v-model="state" :visible="state.isVisible" :default-value="state.date" type="range"
@@ -51,77 +69,103 @@ import { ref } from 'vue'
   <nut-collapse v-model="activeNames" @change="onChange">
 
     <nut-collapse-item :name="1">
-      <template #title> {{ title.title1 }} </template>
-      <nut-cell>
-        <nut-row :gutter="10">
-          <nut-col :span="4">
-            <nut-avatar class="demo-avatar" bg-color="#FA2C19">
-              <My color="#fff" />
-            </nut-avatar>
-            <nut-tag type="danger">未完成</nut-tag>
-          </nut-col>
-
-          <nut-col :span="12">
-            <!-- <nut-cell center title="背诵英语" sub-title="积分">
-            </nut-cell> -->
-            <div>背诵英语100词</div>
-            <div>积分 <nut-rate v-model="value" readonly size="10" /></div>
-          </nut-col>
-          <nut-col :span="8">
-            <nut-button shape="square" type="primary">
-              去回顾
-            </nut-button>
-          </nut-col>
-
-        </nut-row>
-      </nut-cell>
+      <template #title> {{ title.title1 }} <nut-divider /></template>
 
       <nut-cell>
         <nut-row :gutter="10">
           <nut-col :span="4">
-            <nut-avatar class="demo-avatar" bg-color="#FA2C19">
+            <nut-avatar size="50" class="demo-avatar" bg-color="rgb(253, 227, 207)" shape="square">
               <My color="#fff" />
             </nut-avatar>
+            <nut-tag plain type="warning">未完成</nut-tag>
           </nut-col>
+
           <nut-col :span="12">
-            <!-- <nut-cell center title="背诵英语" sub-title="积分">
-            </nut-cell> -->
             <div>背诵英语100词</div>
             <div>积分 <nut-rate v-model="value" readonly size="10" /></div>
+
           </nut-col>
           <nut-col :span="8">
-            <nut-button shape="square" type="primary">
+            <nut-button plain type="info">
               去回顾
             </nut-button>
           </nut-col>
 
+          <nut-col :span="20">
+            <div>
+              <nut-cell sub-title="难度中等" desc="9月22日19:00截止"></nut-cell>
+            </div>
+          </nut-col>
         </nut-row>
+
       </nut-cell>
+      <nut-divider />
+
+
+      <nut-cell>
+        <nut-row :gutter="10">
+          <nut-col :span="4">
+            <nut-avatar size="50" class="demo-avatar" bg-color="rgb(253, 227, 207)" shape="square">
+              <My color="#fff" />
+            </nut-avatar>
+            <nut-tag plain type="warning">未完成</nut-tag>
+          </nut-col>
+
+          <nut-col :span="12">
+            <div>背诵英语100词</div>
+            <div>积分 <nut-rate v-model="value" readonly size="10" /></div>
+
+          </nut-col>
+          <nut-col :span="8">
+            <nut-button plain type="info">
+              去回顾
+            </nut-button>
+          </nut-col>
+
+          <nut-col :span="20">
+            <div>
+              <nut-cell sub-title="难度中等" desc="9月22日19:00截止"></nut-cell>
+            </div>
+          </nut-col>
+        </nut-row>
+
+      </nut-cell>
+      <nut-divider />
     </nut-collapse-item>
 
 
-    <nut-collapse-item :title=title.title2 :name="2">
+    <nut-collapse-item :name="2">
+      <template #title> {{ title.title2 }} <nut-divider /></template>
+
       <nut-cell>
         <nut-row :gutter="10">
           <nut-col :span="4">
-            <nut-avatar class="demo-avatar" bg-color="#FA2C19">
+            <nut-avatar size="50" class="demo-avatar" bg-color="rgb(253, 227, 207)" shape="square">
               <My color="#fff" />
             </nut-avatar>
+            <nut-tag plain type="warning">未完成</nut-tag>
           </nut-col>
+
           <nut-col :span="12">
-            <!-- <nut-cell center title="背诵英语" sub-title="积分">
-            </nut-cell> -->
             <div>背诵英语100词</div>
             <div>积分 <nut-rate v-model="value" readonly size="10" /></div>
+
           </nut-col>
           <nut-col :span="8">
-            <nut-button shape="square" type="primary">
+            <nut-button plain type="info">
               去回顾
             </nut-button>
           </nut-col>
 
+          <nut-col :span="20">
+            <div>
+              <nut-cell sub-title="难度中等" desc="9月22日19:00截止"></nut-cell>
+            </div>
+          </nut-col>
         </nut-row>
+
       </nut-cell>
+      <nut-divider />
     </nut-collapse-item>
   </nut-collapse>
 </template>
@@ -148,6 +192,11 @@ const child = {
 const getChildrenPointsData = async () => {
   const res = await childrenApi.getChildrenPoints(child);
   console.log(res);
+};
+
+const getChildrenTaskList = async () => {
+  const list = await childrenApi.getChildrenTaskList(child);
+  console.log(list);
 };
 
 const onChange = (modelValue, currName, status) => {
@@ -197,7 +246,7 @@ const changeTab = (tab) => {
 
 <style lang="scss">
 .light-orange-cell {
-  background-color: #FFEFD5;
+  background-color:  #8780d9;
   /* Light orange color */
 }
 
