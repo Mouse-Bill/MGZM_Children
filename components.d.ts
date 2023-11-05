@@ -19,7 +19,6 @@ declare module '@vue/runtime-core' {
     NutDivider: typeof import('@nutui/nutui-taro')['Divider']
     NutMenu: typeof import('@nutui/nutui-taro')['Menu']
     NutMenuItem: typeof import('@nutui/nutui-taro')['MenuItem']
-
     NutNavbar: typeof import('@nutui/nutui-taro')['Navbar']
     NutPrice: typeof import('@nutui/nutui-taro')['Price']
     NutRate: typeof import('@nutui/nutui-taro')['Rate']
@@ -33,6 +32,7 @@ declare module '@vue/runtime-core' {
     NutTabPane: typeof import('@nutui/nutui-taro')['TabPane']
     NutTabs: typeof import('@nutui/nutui-taro')['Tabs']
     NutTag: typeof import('@nutui/nutui-taro')['Tag']
+    NutTextarea: typeof import('@nutui/nutui-taro')['Textarea']
     NutToast: typeof import('@nutui/nutui-taro')['Toast']
   }
 }
