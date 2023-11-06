@@ -79,9 +79,10 @@
 </template>
 
 <script setup>
-import { reactive,ref} from 'vue'
+import { reactive,ref} from 'vue';
 import { Search2, Message } from '@nutui/icons-vue-taro';
-import Taro from '@tarojs/taro'
+import Taro from '@tarojs/taro';
+import mallApi from '../../api/mall'
 const ruleVisble = ref(false);
 
 const state = reactive({
@@ -148,6 +149,14 @@ const goDetail = (id) =>{
 const search = function () {
         console.log(state.searchValue);
       };
+
+async function getGoodsList(){
+  const res = await mallApi.getGoodsList();
+  console.log(res)
+  state.mainProducts = res.data
+}
+
+getGoodsList()
 
 </script>
 
