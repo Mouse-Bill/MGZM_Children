@@ -2,7 +2,7 @@
     "miniprogramRoot": "dist/",
     "projectname": "MGZM_Children",
     "description": "Children—end for Mingguangzhumeng Project",
-    "appid": "wx5ac4fed81e7c9c99",
+    "appid": "touristappid",
     "setting": {
         "urlCheck": true,
         "es6": false,
