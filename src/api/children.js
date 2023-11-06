@@ -9,8 +9,9 @@ const getChildrenInfo = (data) => {
 };
 
 const getChildrenTaskList = (data) => {
-  return http.get('/getChildrenTaskList', data);
+  return http.post('/getChildrenTaskList', data);
 };
+
 
 export default {
   getChildrenPoints,

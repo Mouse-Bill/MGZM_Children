@@ -17,13 +17,13 @@ import { ref } from 'vue'
 
     
     <nut-space >
-      <nut-button shape="square" type="warning" @click="getChildrenTaskList(child)">
+      <nut-button shape="square" type="warning" @click="">
         <Category></Category>
         积分
       </nut-button>
 
       <nut-button shape="square" type="warning">
-        <My></My>
+        <Check></Check>
         资源
       </nut-button>
     </nut-space>
@@ -74,15 +74,15 @@ import { ref } from 'vue'
       <nut-cell>
         <nut-row :gutter="10">
           <nut-col :span="4">
-            <nut-avatar size="50" class="demo-avatar" bg-color="rgb(253, 227, 207)" shape="square">
-              <My color="#fff" />
+            <nut-avatar size="50" class="demo-avatar" bg-color="rgb(84,255, 193)" shape="square">
+              <Check color="#fff" />
             </nut-avatar>
             <nut-tag plain type="warning">未完成</nut-tag>
           </nut-col>
 
           <nut-col :span="12">
-            <div>背诵英语100词</div>
-            <div>积分 <nut-rate v-model="value" readonly size="10" /></div>
+            <div>{{taskList.ctName}}</div>
+            <div>积分 <nut-rate v-model="taskList.ctPoints" readonly size="10" /></div>
 
           </nut-col>
           <nut-col :span="8">
@@ -93,7 +93,7 @@ import { ref } from 'vue'
 
           <nut-col :span="20">
             <div>
-              <nut-cell sub-title="难度中等" desc="9月22日19:00截止"></nut-cell>
+              <nut-cell :sub-title="`难度系数: ${taskList.ctDifficulty}`" :desc="`${taskList.ctEndTime}截止`"></nut-cell>
             </div>
           </nut-col>
         </nut-row>
@@ -105,15 +105,15 @@ import { ref } from 'vue'
       <nut-cell>
         <nut-row :gutter="10">
           <nut-col :span="4">
-            <nut-avatar size="50" class="demo-avatar" bg-color="rgb(253, 227, 207)" shape="square">
-              <My color="#fff" />
+            <nut-avatar size="50" class="demo-avatar" bg-color="rgb(84,255, 193)" shape="square">
+              <Check color="#fff" />
             </nut-avatar>
             <nut-tag plain type="warning">未完成</nut-tag>
           </nut-col>
 
           <nut-col :span="12">
-            <div>背诵英语100词</div>
-            <div>积分 <nut-rate v-model="value" readonly size="10" /></div>
+            <div>{{taskList.ctName}}</div>
+            <div>积分 <nut-rate v-model="taskList.ctPoints" readonly size="10" /></div>
 
           </nut-col>
           <nut-col :span="8">
@@ -124,7 +124,7 @@ import { ref } from 'vue'
 
           <nut-col :span="20">
             <div>
-              <nut-cell sub-title="难度中等" desc="9月22日19:00截止"></nut-cell>
+              <nut-cell :sub-title="`难度系数: ${taskList.ctDifficulty}`" :desc="`${taskList.ctEndTime}截止`"></nut-cell>
             </div>
           </nut-col>
         </nut-row>
@@ -140,15 +140,15 @@ import { ref } from 'vue'
       <nut-cell>
         <nut-row :gutter="10">
           <nut-col :span="4">
-            <nut-avatar size="50" class="demo-avatar" bg-color="rgb(253, 227, 207)" shape="square">
-              <My color="#fff" />
+            <nut-avatar size="50" class="demo-avatar" bg-color="rgb(84,255, 193)" shape="square">
+              <Check color="#fff" />
             </nut-avatar>
             <nut-tag plain type="warning">未完成</nut-tag>
           </nut-col>
 
           <nut-col :span="12">
-            <div>背诵英语100词</div>
-            <div>积分 <nut-rate v-model="value" readonly size="10" /></div>
+            <div>{{taskList.ctName}}</div>
+            <div>积分 <nut-rate v-model="taskList.ctPoints" readonly size="10" /></div>
 
           </nut-col>
           <nut-col :span="8">
@@ -159,7 +159,7 @@ import { ref } from 'vue'
 
           <nut-col :span="20">
             <div>
-              <nut-cell sub-title="难度中等" desc="9月22日19:00截止"></nut-cell>
+              <nut-cell :sub-title="`难度系数: ${taskList.ctDifficulty}`" :desc="`${taskList.ctEndTime}截止`"></nut-cell>
             </div>
           </nut-col>
         </nut-row>
@@ -173,12 +173,21 @@ import { ref } from 'vue'
 
 
 <script setup>
-import { reactive, ref, toRefs, h } from 'vue';
-import { Category, Find, Cart, My, MoreX } from '@nutui/icons-vue-taro';
+import { reactive, ref, toRefs, h, onMounted } from 'vue';
+import { Category, Find, Cart, Check, MoreX } from '@nutui/icons-vue-taro';
 import childrenApi from '../../api/children';
+import Taro from '@tarojs/taro';
+
+let taskList = reactive({
+  ctName: "背诵英语",
+  ctDone: "0",
+  ctEndTime: "2023-10-29 16:00",
+  ctPoints: 5,
+  ctDifficulty: 3,
+})
 
 const activeNames = ref([1, 2]);
-const value = ref(3); //积分星星
+// const value = ref(3); //积分星星
 
 const title = reactive({
   title1: '必做任务',
@@ -188,22 +197,37 @@ const title = reactive({
 const child = {
   u_id: "26adeeee-7994-11ee-b962-0242ac120002"
 }
+// child.u_id = Taro.getStorageSync('child').u_id
 
-const getChildrenPointsData = async () => {
-  const res = await childrenApi.getChildrenPoints(child);
-  console.log(res);
-};
+// const getChildrenPointsData = async () => {
+//   const res = await childrenApi.getChildrenPoints(child);
+//   console.log(res);
+// };
 
-const getChildrenTaskList = async () => {
-  const list = await childrenApi.getChildrenTaskList(child);
+async function loadChildrenTaskList() {
+  const list = await childrenApi.getChildrenTaskList(child)
+  taskList.ctName = list.data[0].ctName;
+  taskList.ctPoints = list.data[0].ctPoints;
+  taskList.ctEndTime = list.data[0].ctEndTime;
+  taskList.ctDifficulty = list.data[0].ctDifficulty;
   console.log(list);
 };
+loadChildrenTaskList();
+
+
+// async function loadChildrenInfo() {
+//   const list = await childrenApi.getChildrenInfo(child)
+//   console.log(list);
+// };
+
+
 
 const onChange = (modelValue, currName, status) => {
   // currName: 当前操作的 collapse-item 的 name
   // status: true 打开 false 关闭
   console.log(modelValue, currName, status);
 };
+
 
 
 //date
