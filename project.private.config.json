@@ -11,6 +11,13 @@
             "list": [
                 {
                     "name": "",
+                    "pathName": "pages/taskupload/taskupload",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": null
+                },
+                {
+                    "name": "",
                     "pathName": "pages/community/community",
                     "query": "",
                     "launchMode": "default",

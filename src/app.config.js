@@ -7,6 +7,7 @@ export default defineAppConfig({
     'pages/mall/mall',
     'pages/mine/mine',
     'pages/goods/goods',
+    'pages/taskupload/taskupload',
     
   ],
   tabBar: {

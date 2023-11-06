@@ -39,5 +39,6 @@ declare module '@vue/runtime-core' {
     NutTabs: typeof import('@nutui/nutui-taro')['Tabs']
     NutTag: typeof import('@nutui/nutui-taro')['Tag']
     NutToast: typeof import('@nutui/nutui-taro')['Toast']
+    NutUploader: typeof import('@nutui/nutui-taro')['Uploader']
   }
 }
