@@ -10,7 +10,7 @@ const App = createApp({
   // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
 })
 
-Taro.setStorageSync('token', null)
+Taro.setStorageSync('token', "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ7XCJ1X2FjY291bnRcIjpcIlwiLFwidV9wYXNzd29yZFwiOlwiXCJ9IiwiY3JlYXRlZCI6MTY5OTI3MTU5MjYwNiwiZXhwIjoxNjk5Mjc1MTkyfQ.5pstgE9lf-46yLUjqU1uv9p4bDJfzemQs6wrj5bvU3kRiw3R8J-up-pE_M1VCHYD")
 Taro.setStorageSync('child', null)
 
 
