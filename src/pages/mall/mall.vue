@@ -151,25 +151,20 @@ const state = reactive({
 const handleChange1 = (val) => {
   if (val == "0") {
     console.log("全部商品");
+    state.mainProductsToShow = state.mainProducts;
   } else if (val == "1") {
     console.log("有库存的商品");
+    state.mainProductsToShow = state.mainProducts.filter(item => item.goodsNum != 0);
   } else if (val == "2") {
     console.log("无库存的商品");
+    state.mainProductsToShow = state.mainProducts.filter(item => item.goodsNum == 0);
   } else {
     console.log("库存排序失败");
   }
 };
 
 const handleChange2 = (val) => {
-  if (val == "a") {
-    console.log("默认排序");
-  } else if (val == "b") {
-    console.log("积分从高到低排序");
-  } else if (val == "c") {
-    console.log("积分从低到高排序");
-  } else {
-    console.log("积分排序失败");
-  }
+  getRankedGoodsList(val,state.mainProductsToShow);
 };
 
 const tipsClick = () => {
@@ -191,16 +186,16 @@ const search = function () {
 const getRankedGoodsList = (val, data) => {
   if (val == 'a') {
     console.log('默认排序');
-    return data;
+    getGoodsList();
   } else if (val == 'b') {
     console.log('积分从高到低排序');
-    return data.sort((a,b)=>a.goodsPoint - b.goodsPoint);
+    data.sort((a,b)=>b.goodsPoints - a.goodsPoints);
   } else if (val == 'c') {
     console.log('积分从低到高排序');
-    return data.sort((a,b)=>a.goodsPoint - b.goodsPoint);
+     ata.sort((a,b)=>a.goodsPoints - b.goodsPoints);
   } else {
     console.log('积分排序失败');
-    return data;
+    data;
   }
 }
 
@@ -212,24 +207,24 @@ async function getGoodsList() {
 }
 getGoodsList();
 
-computed:{
-  state.mainProductsToShow(){
-    if(state.options1=='0'){
-      console.log('全部商品');
-      state.mainProductsToShow = state.mainProducts;
-    }else if(state.options1=="1"){
-      console.log('有库存的商品');
-      state.mainProductsToShow = state.mainProducts.filter(item => item.goodsNum != 0);
-    }
-    else if(state.options1=="2"){
-      console.log('无库存的商品');
-      state.mainProductsToShow = state.mainProducts.filter(item => item.goodsNum == 0);
-    }else{
-      console.log("库存量排序失败");
-    }
-    return getRankedGoodsList(state.options2,state.mainProductsToShow);
-  };
-};
+// computed:{
+//   state.mainProductsToShow(){
+//     if(state.options1=='0'){
+//       console.log('全部商品');
+//       state.mainProductsToShow = state.mainProducts;
+//     }else if(state.options1=="1"){
+//       console.log('有库存的商品');
+//       state.mainProductsToShow = state.mainProducts.filter(item => item.goodsNum != 0);
+//     }
+//     else if(state.options1=="2"){
+//       console.log('无库存的商品');
+//       state.mainProductsToShow = state.mainProducts.filter(item => item.goodsNum == 0);
+//     }else{
+//       console.log("库存量排序失败");
+//     }
+//     return getRankedGoodsList(state.options2,state.mainProductsToShow);
+//   };
+// };
 </script>
 
 <style>
