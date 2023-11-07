@@ -86,37 +86,39 @@ import { ref } from 'vue'
                   {{ title.title1 }} 
               </template>
 
-              <nut-cell v-for="task in taskList.data" v-show="!checkSelective(task)">
-                <nut-row :gutter="10">
-                  <nut-col :span="4">
-                    <nut-avatar v-if="checkDone(task)" size="50" class="demo-avatar" bg-color="rgb(84,255, 193)"
-                      shape="square">
-                      <Check color="#fff" />
-                    </nut-avatar>
-                    <nut-avatar v-else size="50" class="demo-avatar" bg-color="rgb(84,255, 193)" shape="square">
-                      <MoreX color="#fff" />
-                    </nut-avatar>
-                    <nut-tag plain type="warning">未完成</nut-tag>
-                  </nut-col>
+      <nut-cell v-for="task in taskList.data" v-show="!checkSelective(task)">
+        <nut-row :gutter="10">
+          <nut-col :span="4">
+            <nut-avatar v-if="checkDone(task)" size="50" class="demo-avatar" bg-color="rgb(84,255, 193)" shape="square">
+              <Check color="#fff" />
+            </nut-avatar>
+            <nut-avatar v-else size="50" class="demo-avatar" bg-color="rgb(155,155, 155)" shape="square">
+              <MoreX color="#fff" />
+            </nut-avatar>
+            <nut-tag v-if="checkDone(task)" plain type="warning">{{finish.finish}}</nut-tag>
+            <nut-tag v-else="!checkDone(task)" plain type="warning">{{finish.unFinish}}</nut-tag>
+          </nut-col>
 
                   <nut-col :span="12">
                     <div>{{ task.ctName }}</div>
                     <div>积分 <nut-rate v-model="task.ctPoints" readonly size="10" /></div>
 
-                  </nut-col>
-                  <nut-col :span="8">
-                    <nut-button plain type="info">
-                      去回顾
-                    </nut-button>
-                  </nut-col>
+          </nut-col>
+          <nut-col :span="8">
+            <nut-button v-if="checkDone(task)" plain type="info">
+              去回顾
+            </nut-button>
+            <nut-button v-else="!checkDone(task)" type="info">
+              去完成
+            </nut-button>
+          </nut-col>
 
-                  <nut-col :span="20">
-                    <div>
-                      <nut-cell :sub-title="`难度系数: ${taskList.ctDifficulty}`"
-                        :desc="`${taskList.ctEndTime}截止`"></nut-cell>
-                    </div>
-                  </nut-col>
-                </nut-row>
+          <nut-col :span="20">
+            <div>
+              <nut-cell :sub-title="`难度系数: ${task.ctDifficulty}`" :desc="`${task.ctEndTime}截止`"></nut-cell>
+            </div>
+          </nut-col>
+        </nut-row>
 
               </nut-cell>
               <!-- <nut-divider /> -->
@@ -126,36 +128,39 @@ import { ref } from 'vue'
             <nut-collapse-item :name="2">
               <template #title> {{ title.title2 }} <nut-divider /></template>
 
-              <nut-cell>
-                <nut-row :gutter="10">
-                  <nut-col :span="4">
-                    <nut-avatar v-if="checkDone" size="50" class="demo-avatar" bg-color="rgb(84,255, 193)" shape="square">
-                      <Check color="#fff" />
-                    </nut-avatar>
-                    <nut-avatar v-else size="50" class="demo-avatar" bg-color="rgb(84,255, 193)" shape="square">
-                      <MoreX color="#fff" />
-                    </nut-avatar>
-                    <nut-tag plain type="warning">未完成</nut-tag>
-                  </nut-col>
+      <nut-cell v-for="task in taskList.data" v-show="checkSelective(task)">
+        <nut-row :gutter="10">
+          <nut-col :span="4">
+            <nut-avatar v-if="checkDone(task)" size="50" class="demo-avatar" bg-color="rgb(84,255, 193)" shape="square">
+              <Check color="#fff" />
+            </nut-avatar>
+            <nut-avatar v-else size="50" class="demo-avatar" bg-color="rgb(155,155, 155)" shape="square">
+              <MoreX color="#fff" />
+            </nut-avatar>
+            <nut-tag v-if="checkDone(task)" plain type="warning">{{finish.finish}}</nut-tag>
+            <nut-tag v-else="!checkDone(task)" plain type="warning">{{finish.unFinish}}</nut-tag>
+          </nut-col>
 
-                  <nut-col :span="12">
-                    <div>{{ taskList.ctName }}</div>
-                    <div>积分 <nut-rate v-model="taskList.ctPoints" readonly size="10" /></div>
+          <nut-col :span="12">
+            <div>{{ task.ctName }}</div>
+            <div>积分 <nut-rate v-model="task.ctPoints" readonly size="10" /></div>
 
-                  </nut-col>
-                  <nut-col :span="8">
-                    <nut-button plain type="info">
-                      去回顾
-                    </nut-button>
-                  </nut-col>
+          </nut-col>
+          <nut-col :span="8">
+            <nut-button v-if="checkDone(task)" plain type="info">
+              去回顾
+            </nut-button>
+            <nut-button v-else="!checkDone(task)" type="info">
+              去完成
+            </nut-button>
+          </nut-col>
 
-                  <nut-col :span="20">
-                    <div>
-                      <nut-cell :sub-title="`难度系数: ${taskList.ctDifficulty}`"
-                        :desc="`${taskList.ctEndTime}截止`"></nut-cell>
-                    </div>
-                  </nut-col>
-                </nut-row>
+          <nut-col :span="20">
+            <div>
+              <nut-cell :sub-title="`难度系数: ${task.ctDifficulty}`" :desc="`${task.ctEndTime}截止`"></nut-cell>
+            </div>
+          </nut-col>
+        </nut-row>
 
               </nut-cell>
               <nut-divider />
@@ -176,7 +181,7 @@ import { ref } from 'vue'
 
 <script setup>
 import { reactive, ref, toRefs, h, onMounted, computed } from 'vue';
-import { Category, Find, Cart, Check, MoreX } from '@nutui/icons-vue-taro';
+import { Category, Check, MoreX } from '@nutui/icons-vue-taro';
 import childrenApi from '../../api/children';
 import Taro from '@tarojs/taro';
 const tabsValue = ref('0');
@@ -192,15 +197,14 @@ const tabsValue = ref('0');
 const child = {
   u_id: "26adeeee-7994-11ee-b962-0242ac120002"
 }
+const finish = ref({
+  finish: "已完成",
+  unFinish: "未完成",
+});
 // const child = Taro.getStorageSync('child');
 
 async function loadChildrenTaskList() {
   const list = await childrenApi.getChildrenTaskList(child)
-  // taskList.ctName = list.data[0].ctName;
-  // taskList.ctPoints = list.data[0].ctPoints;
-  // taskList.ctEndTime = list.data[0].ctEndTime;
-  // taskList.ctDifficulty = list.data[0].ctDifficulty;
-
   console.log(list);
   return list;
 };
@@ -221,19 +225,6 @@ const title = reactive({
   title2: '选做任务',
 });
 
-
-
-// const getChildrenPointsData = async () => {
-//   const res = await childrenApi.getChildrenPoints(child);
-//   console.log(res);
-// };
-
-
-
-// async function loadChildrenInfo() {
-//   const list = await childrenApi.getChildrenInfo(child)
-//   console.log(list);
-// };
 
 
 
