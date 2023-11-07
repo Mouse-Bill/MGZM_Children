@@ -18,12 +18,18 @@ const child = {};
 // child.u_id = Taro.getStorageSync('child').u_id;
 child.u_id = "26adeeee-7994-11ee-b962-0242ac120002";
 
-async function submit() {
-  await childrenApi.getChildrenPoints(child).then(res => {
-    console.log(res);
-    Taro.switchTab({
-      url: '/pages/tasks/tasks'
-    });
+//async function submit() {
+//  await childrenApi.getChildrenPoints(child).then(res => {
+//    console.log(res);
+//    Taro.switchTab({
+//      url: '/pages/tasks/tasks'
+//    });
+//  });
+//}
+
+const submit = async () => {
+  Taro.navigateTo({
+    url: '/pages/taskupload/taskupload'
   });
-}
+};
 </script>

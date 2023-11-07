@@ -33,7 +33,7 @@ const uploadAnserImg = (taroUploadFile, options) => {
   // });
   //taroUploadFile  是 Taro.uploadFile ， 你也可以自定义设置其它函数
   const uploadTask = taroUploadFile({
-    url: 'http://localhost:8080/uploadTaskImg',
+    url: 'http://localhost:8080/uploadChildrenTask',
     filePath: options.taroFilePath,
     fileType: options.fileType,
     header: {
@@ -41,20 +41,26 @@ const uploadAnserImg = (taroUploadFile, options) => {
       ...options.headers,
     }, //
     formData: {
-      user: 'test',
+      //u_id: Taro.getStorageSync('child').u_id,
+      u_id: options.u_id,
+      problemId: options.problemId,
     },
     name: options.name,
     success: function (res) {
-      var data = res.data;
-      //do something
+      console.log('上传成功------', res);
     },
   });
-  // options.onStart?.(options);
+  options.onStart?.(options);
   uploadTask.progress((res) => {
     console.log('上传进度', res.progress);
     console.log('已经上传的数据长度', res.totalBytesSent);
     console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend);
   });
+  uploadTask.then((res) => {
+    console.log('上传成功', res);
+    options.onSuccess?.(res);
+  });
+
   // uploadTask.abort(); // 取消上传任务
 };
 
