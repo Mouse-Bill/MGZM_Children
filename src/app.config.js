@@ -8,6 +8,7 @@ export default defineAppConfig({
     'pages/mine/mine',
     'pages/goods/goods',
     'pages/taskupload/taskupload',
+    'pages/answerSheet/answerSheet',
     
   ],
   tabBar: {

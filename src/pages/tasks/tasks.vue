@@ -1,17 +1,3 @@
-<!-- <template>
-  <h1>Here is a task component!</h1>
-  <h2>hhhhhhh</h2>
-  <counter />
-  <button @click="count++">count is: {{ count }}</button>
-</template>
-
-<nut-cell :showIcon="true" :desc="state.date && state.date[0] ? `${state.date[0]}至${state.date[1]}` : '请选择'"
-    style="color: blue;" @click="openSwitch"></nut-cell>
-
-<script setup>
-import counter from '../../components/counter.vue'
-import { ref } from 'vue'
-</script> -->
 <template class="page">
   <view style="padding-bottom: 10%;">
     <nut-cell class="top-cell">
@@ -21,7 +7,7 @@ import { ref } from 'vue'
             当前积分</h1>
         </div>
         <div class="header-count">
-          <nut-countup class="count-up" :init-num="0.00" :end-num="100.00" :speed="5" :during="1"
+          <nut-countup class="count-up" :init-num="0.00" :end-num="points" :speed="5" :during="1"
             :to-fixed="2"></nut-countup>
         </div>
 
@@ -53,14 +39,6 @@ import { ref } from 'vue'
 
 
     <div class="main-card">
-      <!-- <nut-navbar @click-back="back" @click-Title="tabTitle">
-        <template #content>
-          <nut-tabs :title-gutter="10" v-model="tab1value" @click="changeTab" >
-            <nut-tab-pane title="任务看板"></nut-tab-pane>
-            <nut-tab-pane title="反馈情况"></nut-tab-pane>
-          </nut-tabs>
-        </template>
-      </nut-navbar> -->
 
       <nut-tabs v-model="tabsValue" :background="`rgba(255, 255, 255, 1)`">
         <nut-tab-pane title="任务看板" pane-key="0" style="padding: 2px;">
@@ -106,10 +84,10 @@ import { ref } from 'vue'
 
                   </nut-col>
                   <nut-col :span="8">
-                    <nut-button v-if="checkDone(task)" plain type="info">
+                    <nut-button v-if="checkDone(task)" plain type="info" >
                       去回顾
                     </nut-button>
-                    <nut-button v-else="!checkDone(task)" type="info">
+                    <nut-button v-else="!checkDone(task)" type="info" @click="doTask(task.ctId)">
                       去完成
                     </nut-button>
                   </nut-col>
@@ -132,7 +110,7 @@ import { ref } from 'vue'
             </nut-collapse-item>
 
 
-            <nut-collapse-item :name="2">
+            <nut-collapse-item :name="2" class="collapse-panel">
               <template #title> {{ title.title2 }} <nut-divider /></template>
 
               <nut-cell v-for="task in taskList.data" v-show="checkSelective(task)">
@@ -165,7 +143,13 @@ import { ref } from 'vue'
 
                   <nut-col :span="20">
                     <div>
-                      <nut-cell :sub-title="`难度系数: ${task.ctDifficulty}`" :desc="`${task.ctEndTime}截止`"></nut-cell>
+                      <nut-cell>
+                        <template #title>
+                          <span>难度系数: {{task.ctDifficulty}}</span>
+                        </template>
+                        <template #desc>
+                          <span>{{timeHandler(task.ctEndTime)}}截止</span>
+                        </template></nut-cell>
                     </div>
                   </nut-col>
                 </nut-row>
@@ -188,20 +172,13 @@ import { ref } from 'vue'
 
 
 <script setup>
-import { reactive, ref, toRefs, h, onMounted, computed } from 'vue';
-import { Category, Check, MoreX } from '@nutui/icons-vue-taro';
+import { reactive, ref, onMounted, computed } from 'vue';
+import { Category, Check, MoreX, Clock } from '@nutui/icons-vue-taro';
 import childrenApi from '../../api/children';
-import Taro from '@tarojs/taro';
 const tabsValue = ref('0');
+import Taro from '@tarojs/taro';
 
-// let taskList = reactive({
-//   ctName: "背诵英语",
-//   ctDone: "0",
-//   ctEndTime: "2023-10-29 16:00",
-//   ctPoints: 5,
-//   ctDifficulty: 3,
-// })
-
+const showIcon = ref(false);
 const child = {
   u_id: "26adeeee-7994-11ee-b962-0242ac120002"
 }
@@ -213,14 +190,26 @@ const finish = ref({
 
 async function loadChildrenTaskList() {
   const list = await childrenApi.getChildrenTaskList(child)
-  console.log(list);
+  // console.log(list);
   return list;
 };
+
+const points = ref(0);
+async function getChildrenPoints() {
+  const tmppoints = await childrenApi.getChildrenPoints(child).then(res => {
+    console.log(res.data);
+    points.value = res.data;
+  })
+  console.log("66666666666666666666666666666666666",tmppoints);
+  return points;
+};
+getChildrenPoints();
+
 
 const taskList = ref({});
 async function handler() {
   taskList.value = await loadChildrenTaskList();
-  console.log("tasklist", taskList);
+  // console.log("tasklist", taskList);
 }
 onMounted(handler);
 
@@ -233,6 +222,8 @@ const title = reactive({
   title2: '选做任务',
 });
 
+
+
 function timeHandler(time) {
   let date = new Date(time);
   let year = date.getFullYear();
@@ -244,6 +235,20 @@ function timeHandler(time) {
   return `${month}-${day} ${hour}:${minute}`;
 }
 
+// function timeCanlender(time) {
+//   let date = new Date(time);
+//   let year = date.getFullYear();
+//   let month = date.getMonth();
+//   let day = date.getDate();
+//   return `${year}-${month}-${day}`;
+// }
+
+function doTask(taskId) {
+  Taro.navigateTo({
+    url: `/pages/answerSheet/answerSheet?taskId=${taskId}`,
+  });
+  console.log(taskId);
+}
 
 
 
@@ -257,9 +262,23 @@ const onChange = (modelValue, currName, status) => {
 
 //date
 const state = reactive({
-  date: ['2019-12-23', '2019-12-26'],
+  date: [],
   isVisible: false,
 });
+
+function updateTime() {
+  const dataList = childrenApi.getChildrenTaskInthisTime(child).then(res => {
+    console.log("99999999999999999999999999",res.data);
+    
+    state.date.push(res.data.ctStartTime);
+    state.date.push(res.data.ctEndTime);
+    console.log("2222222222222222222222",state);
+  })
+
+};
+
+updateTime();
+
 
 function openSwitch() {
   state.isVisible = true;
@@ -310,19 +329,6 @@ function checkSelective(task) {
 
 
 <style>
-.light-orange-cell {
-  /* background-color: #8780d9; */
-  /* Light orange color */
-}
-
-.nut-cell__value {
-  /* flex: initial; */
-}
-
-.nut-tabs {
-  /* width: 580px; */
-}
-
 .top-cell {
   margin-top: 0;
   --nut-cell-large-padding: 18px;

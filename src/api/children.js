@@ -1,6 +1,8 @@
 // import http from '../utils/http/http.js';
 import http from '../utils/http/request.js';
 import Taro from '@tarojs/taro';
+
+
 const getChildrenPoints = (data) => {
   return http.post('/getChildrenPoints', data);
 };
@@ -12,6 +14,14 @@ const getChildrenInfo = (data) => {
 const getChildrenTaskList = (data) => {
   return http.post('/getChildrenTaskList', data);
 };
+
+const getChildrenTaskInthisTime = (data) => {
+  return http.post('/getChildrenTaskInthisTime', data);
+}
+
+const getTaskQuestionList = (data) => {
+  return http.post('/getTaskQuestionList', data);
+}
 
 const uploadAnserImg = (taroUploadFile, options) => {
   // const uploadTask = taroUploadFile({
@@ -69,4 +79,6 @@ export default {
   getChildrenInfo,
   getChildrenTaskList,
   uploadAnserImg,
+  getChildrenTaskInthisTime,
+  getTaskQuestionList,
 };
