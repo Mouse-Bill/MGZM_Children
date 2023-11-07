@@ -82,85 +82,93 @@ import { ref } from 'vue'
           <nut-collapse v-model="activeNames" @change="onChange">
 
             <nut-collapse-item :name="1" class="collapse-panel">
-              <template #title> 
-                  {{ title.title1 }} 
+              <template #title>
+                {{ title.title1 }}
               </template>
 
-      <nut-cell v-for="task in taskList.data" v-show="!checkSelective(task)">
-        <nut-row :gutter="10">
-          <nut-col :span="4">
-            <nut-avatar v-if="checkDone(task)" size="50" class="demo-avatar" bg-color="rgb(84,255, 193)" shape="square">
-              <Check color="#fff" />
-            </nut-avatar>
-            <nut-avatar v-else size="50" class="demo-avatar" bg-color="rgb(155,155, 155)" shape="square">
-              <MoreX color="#fff" />
-            </nut-avatar>
-            <nut-tag v-if="checkDone(task)" plain type="warning">{{finish.finish}}</nut-tag>
-            <nut-tag v-else="!checkDone(task)" plain type="warning">{{finish.unFinish}}</nut-tag>
-          </nut-col>
+              <nut-cell v-for="task in taskList.data" v-show="!checkSelective(task)">
+                <nut-row :gutter="10">
+                  <nut-col :span="4">
+                    <nut-avatar v-if="checkDone(task)" size="50" class="demo-avatar" bg-color="rgb(84,255, 193)"
+                      shape="square">
+                      <Check color="#fff" />
+                    </nut-avatar>
+                    <nut-avatar v-else size="50" class="demo-avatar" bg-color="rgb(155,155, 155)" shape="square">
+                      <MoreX color="#fff" />
+                    </nut-avatar>
+                    <nut-tag v-if="checkDone(task)" plain type="warning">{{ finish.finish }}</nut-tag>
+                    <nut-tag v-else="!checkDone(task)" plain type="warning">{{ finish.unFinish }}</nut-tag>
+                  </nut-col>
 
                   <nut-col :span="12">
                     <div>{{ task.ctName }}</div>
                     <div>积分 <nut-rate v-model="task.ctPoints" readonly size="10" /></div>
 
-          </nut-col>
-          <nut-col :span="8">
-            <nut-button v-if="checkDone(task)" plain type="info">
-              去回顾
-            </nut-button>
-            <nut-button v-else="!checkDone(task)" type="info">
-              去完成
-            </nut-button>
-          </nut-col>
+                  </nut-col>
+                  <nut-col :span="8">
+                    <nut-button v-if="checkDone(task)" plain type="info">
+                      去回顾
+                    </nut-button>
+                    <nut-button v-else="!checkDone(task)" type="info">
+                      去完成
+                    </nut-button>
+                  </nut-col>
 
-          <nut-col :span="20">
-            <div>
-              <nut-cell :sub-title="`难度系数: ${task.ctDifficulty}`" :desc="`${task.ctEndTime}截止`"></nut-cell>
-            </div>
-          </nut-col>
-        </nut-row>
+                  <nut-col :span="20">
+                    <div>
+                      <nut-cell>
+                        <template #title>
+                          <span>难度系数: {{task.ctDifficulty}}</span>
+                        </template>
+                        <template #desc>
+                          <span>{{timeHandler(task.ctEndTime)}}截止</span>
+                        </template></nut-cell>
+                    </div>
+                  </nut-col>
+                </nut-row>
 
               </nut-cell>
               <!-- <nut-divider /> -->
             </nut-collapse-item>
-          
+
 
             <nut-collapse-item :name="2">
               <template #title> {{ title.title2 }} <nut-divider /></template>
 
-      <nut-cell v-for="task in taskList.data" v-show="checkSelective(task)">
-        <nut-row :gutter="10">
-          <nut-col :span="4">
-            <nut-avatar v-if="checkDone(task)" size="50" class="demo-avatar" bg-color="rgb(84,255, 193)" shape="square">
-              <Check color="#fff" />
-            </nut-avatar>
-            <nut-avatar v-else size="50" class="demo-avatar" bg-color="rgb(155,155, 155)" shape="square">
-              <MoreX color="#fff" />
-            </nut-avatar>
-            <nut-tag v-if="checkDone(task)" plain type="warning">{{finish.finish}}</nut-tag>
-            <nut-tag v-else="!checkDone(task)" plain type="warning">{{finish.unFinish}}</nut-tag>
-          </nut-col>
+              <nut-cell v-for="task in taskList.data" v-show="checkSelective(task)">
+                <nut-row :gutter="10">
+                  <nut-col :span="4">
+                    <nut-avatar v-if="checkDone(task)" size="50" class="demo-avatar" bg-color="rgb(84,255, 193)"
+                      shape="square">
+                      <Check color="#fff" />
+                    </nut-avatar>
+                    <nut-avatar v-else size="50" class="demo-avatar" bg-color="rgb(155,155, 155)" shape="square">
+                      <MoreX color="#fff" />
+                    </nut-avatar>
+                    <nut-tag v-if="checkDone(task)" plain type="warning">{{ finish.finish }}</nut-tag>
+                    <nut-tag v-else="!checkDone(task)" plain type="warning">{{ finish.unFinish }}</nut-tag>
+                  </nut-col>
 
-          <nut-col :span="12">
-            <div>{{ task.ctName }}</div>
-            <div>积分 <nut-rate v-model="task.ctPoints" readonly size="10" /></div>
+                  <nut-col :span="12">
+                    <div>{{ task.ctName }}</div>
+                    <div>积分 <nut-rate v-model="task.ctPoints" readonly size="10" /></div>
 
-          </nut-col>
-          <nut-col :span="8">
-            <nut-button v-if="checkDone(task)" plain type="info">
-              去回顾
-            </nut-button>
-            <nut-button v-else="!checkDone(task)" type="info">
-              去完成
-            </nut-button>
-          </nut-col>
+                  </nut-col>
+                  <nut-col :span="8">
+                    <nut-button v-if="checkDone(task)" plain type="info">
+                      去回顾
+                    </nut-button>
+                    <nut-button v-else="!checkDone(task)" type="info">
+                      去完成
+                    </nut-button>
+                  </nut-col>
 
-          <nut-col :span="20">
-            <div>
-              <nut-cell :sub-title="`难度系数: ${task.ctDifficulty}`" :desc="`${task.ctEndTime}截止`"></nut-cell>
-            </div>
-          </nut-col>
-        </nut-row>
+                  <nut-col :span="20">
+                    <div>
+                      <nut-cell :sub-title="`难度系数: ${task.ctDifficulty}`" :desc="`${task.ctEndTime}截止`"></nut-cell>
+                    </div>
+                  </nut-col>
+                </nut-row>
 
               </nut-cell>
               <nut-divider />
@@ -224,6 +232,17 @@ const title = reactive({
   title1: '必做任务',
   title2: '选做任务',
 });
+
+function timeHandler(time) {
+  let date = new Date(time);
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let day = date.getDate();
+  let hour = date.getHours();
+  let minute = date.getMinutes();
+  let second = date.getSeconds();
+  return `${month}-${day} ${hour}:${minute}`;
+}
 
 
 
@@ -369,12 +388,12 @@ function checkSelective(task) {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   transition: all 0.15s ease;
 }
-.collapse-panel{
+
+.collapse-panel {
   --nut-collapse-item-padding: 3%;
   --nut-collapse-item-font-size: 35px;
   --nut-collapse-item-color: rgb(27, 27, 27);
-  --nut-collapse-wrapper-content-padding: 2%
-  margin: 0%;
+  --nut-collapse-wrapper-content-padding: 2% margin: 0%;
   padding-left: 1%;
   padding-right: 1%;
   padding-top: 1%;
@@ -383,8 +402,9 @@ function checkSelective(task) {
   border: #f2daa2;
   border-style: dashed;
 }
-.page{
-  background-color:#f5f5f9 ;
+
+.page {
+  background-color: #f5f5f9;
 }
 </style>
 
