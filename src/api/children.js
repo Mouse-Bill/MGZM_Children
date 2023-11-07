@@ -23,7 +23,7 @@ const getTaskQuestionList = (data) => {
   return http.post('/getTaskQuestionList', data);
 }
 
-const uploadAnserImg = (taroUploadFile, options) => {
+const uploadAnswerImg = (taroUploadFile, options) => {
   // const uploadTask = taroUploadFile({
   //   url: 'http://localhost:8080/uploadTaskImg', //仅为示例，非真实的接口地址
   //   filePath: data.taroFilePath,
@@ -78,7 +78,7 @@ export default {
   getChildrenPoints,
   getChildrenInfo,
   getChildrenTaskList,
-  uploadAnserImg,
+  uploadAnswerImg,
   getChildrenTaskInthisTime,
   getTaskQuestionList,
 };
