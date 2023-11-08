@@ -1,7 +1,11 @@
 <template>
-  <nut-tabbar unactive-color="#7d7e80" active-color="#edc672" v-model="selected" v-if="isVisible">
-    <nut-tabbar-item v-for="(item, index) in list" :tab-title="item.text" :icon="item.icon" @tap="tabSwitch(index,item.pagePath)"> </nut-tabbar-item>
-  </nut-tabbar>
+  <div style="background-color: #ffff;">
+    <nut-tabbar unactive-color="#7d7e80" active-color="#edc672" v-model="selected" v-if="isVisible"
+      style="padding-bottom: 2%;">
+      <nut-tabbar-item v-for="(item, index) in list" :tab-title="item.text" :icon="item.icon"
+        @tap="tabSwitch(index, item.pagePath)"> </nut-tabbar-item>
+    </nut-tabbar>
+  </div>
 </template>
 
 
