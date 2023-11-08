@@ -17,12 +17,13 @@ declare module '@vue/runtime-core' {
     NutCollapseItem: typeof import('@nutui/nutui-taro')['CollapseItem']
     NutDialog: typeof import('@nutui/nutui-taro')['Dialog']
     NutDivider: typeof import('@nutui/nutui-taro')['Divider']
-    NutForm: typeof import('@nutui/nutui-taro')['Form']
-    NutFormItem: typeof import('@nutui/nutui-taro')['FormItem']
+    NutGrid: typeof import('@nutui/nutui-taro')['Grid']
+    NutGridItem: typeof import('@nutui/nutui-taro')['GridItem']
     NutInput: typeof import('@nutui/nutui-taro')['Input']
     NutMenu: typeof import('@nutui/nutui-taro')['Menu']
     NutMenuItem: typeof import('@nutui/nutui-taro')['MenuItem']
     NutNavbar: typeof import('@nutui/nutui-taro')['Navbar']
+    NutNoticebar: typeof import('@nutui/nutui-taro')['Noticebar']
     NutPrice: typeof import('@nutui/nutui-taro')['Price']
     NutRate: typeof import('@nutui/nutui-taro')['Rate']
     NutRow: typeof import('@nutui/nutui-taro')['Row']
@@ -35,7 +36,6 @@ declare module '@vue/runtime-core' {
     NutTabPane: typeof import('@nutui/nutui-taro')['TabPane']
     NutTabs: typeof import('@nutui/nutui-taro')['Tabs']
     NutTag: typeof import('@nutui/nutui-taro')['Tag']
-    NutTextarea: typeof import('@nutui/nutui-taro')['Textarea']
     NutToast: typeof import('@nutui/nutui-taro')['Toast']
   }
 }
