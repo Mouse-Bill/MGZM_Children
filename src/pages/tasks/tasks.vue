@@ -269,10 +269,18 @@ const state = reactive({
 function updateTime() {
   const dataList = childrenApi.getChildrenTaskInthisTime(child).then(res => {
     console.log("99999999999999999999999999",res.data);
+       // Extract start times and end times from the response data
+    const startTimes = res.data.map(task => task.startTime);
+    const endTimes = res.data.map(task => task.endTime);
+
+    // Find the earliest start time and latest end time
+    const earliestStartTime = Math.min(...startTimes);
+    const latestEndTime = Math.max(...endTimes);
+
+    // Display the earliest start time and latest end time
+    console.log("Earliest Start Time:", earliestStartTime);
+    console.log("Latest End Time:", latestEndTime);
     
-    state.date.push(res.data.ctStartTime);
-    state.date.push(res.data.ctEndTime);
-    console.log("2222222222222222222222",state);
   })
 
 };
