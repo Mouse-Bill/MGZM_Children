@@ -15,12 +15,20 @@ const getChildrenTaskList = (data) => {
   return http.post('/getChildrenTaskList', data);
 };
 
-const getChildrenTaskInthisTime = (data) => {
+const getChildrenTaskInThisTime = (data) => {
   return http.post('/getChildrenTaskInthisTime', data);
 }
 
 const getTaskQuestionList = (data) => {
   return http.post('/getTaskQuestionList', data);
+}
+
+const writeAnswerInfo = (data) => {
+  return http.post('/writeAnswerInfo', data);
+}
+
+const getChildrenPastTaskList = (data) => {
+  return http.post('/getChildrenPastTaskList', data);
 }
 
 const uploadAnswerImg = (taroUploadFile, options) => {
@@ -74,11 +82,15 @@ const uploadAnswerImg = (taroUploadFile, options) => {
   // uploadTask.abort(); // 取消上传任务
 };
 
+
+
 export default {
   getChildrenPoints,
   getChildrenInfo,
   getChildrenTaskList,
   uploadAnswerImg,
-  getChildrenTaskInthisTime,
+  getChildrenTaskInThisTime,
   getTaskQuestionList,
+  writeAnswerInfo,
+  getChildrenPastTaskList,
 };
