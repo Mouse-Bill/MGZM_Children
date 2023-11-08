@@ -232,6 +232,7 @@ function timeHandler(time) {
   let hour = date.getHours();
   let minute = date.getMinutes();
   let second = date.getSeconds();
+  console.log(date)
   return `${month}-${day} ${hour}:${minute}`;
 }
 
@@ -266,21 +267,32 @@ const state = reactive({
   isVisible: false,
 });
 
+
 function updateTime() {
   const dataList = childrenApi.getChildrenTaskInthisTime(child).then(res => {
     console.log("99999999999999999999999999",res.data);
-       // Extract start times and end times from the response data
-    const startTimes = res.data.map(task => task.startTime);
-    const endTimes = res.data.map(task => task.endTime);
-
-    // Find the earliest start time and latest end time
-    const earliestStartTime = Math.min(...startTimes);
-    const latestEndTime = Math.max(...endTimes);
-
-    // Display the earliest start time and latest end time
-    console.log("Earliest Start Time:", earliestStartTime);
-    console.log("Latest End Time:", latestEndTime);
-    
+    const startDates = [];
+    const endDates = [];
+    for (let i = 0; i < res.data.length; i++) {
+      const element = res.data[i];
+      const tempStartTime = new Date(element.ctStartTime);
+      const tempEndTime = new Date(element.ctEndTime);
+      tempStartTime.setTime(tempStartTime.getTime());
+      tempEndTime.setTime(tempEndTime.getTime());
+      startDates.push(tempStartTime);
+      endDates.push(tempEndTime);
+    }
+    startDates.sort(function (a, b) {
+      return a.getTime() > b.getTime() ? 1 : -1;
+    });
+    endDates.sort((a, b) => {
+      return a.getTime() < b.getTime() ? 1 : -1;
+    });
+    console.log("StartDates", startDates);
+    console.log("EndDates", endDates);
+    state.date.push(`${startDates[0].getFullYear()}-${startDates[0].getMonth()}-${startDates[0].getDate()}`);
+    state.date.push(`${endDates[0].getFullYear()}-${endDates[0].getMonth()}-${endDates[0].getDate()}`);
+    console.log("2222222222222222222222",state);
   })
 
 };
@@ -325,7 +337,7 @@ function checkDone(task) {
 }
 
 function checkSelective(task) {
-  console.log(task);
+  // console.log(task);
   if (task.ctSelective == "1") {
     return true;
   } else {
