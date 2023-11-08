@@ -45,7 +45,6 @@
     </view>
   </view>
   <view class="text_container">
-    <nut-cell-group>
       <nut-cell>
         <nut-space direction="vertical" fill>
           <div class="goods_name">{{ state.goods.goodsName }}</div>
@@ -60,13 +59,14 @@
           <p class="goods_desc">商品描述：{{ state.goods.goodsDescription }}</p>
         </nut-space>
       </nut-cell>
-    </nut-cell-group>
-
-    <div class="confirmbut1">
+      <nut-cell>
+       <div class="confirmbut1">
       <nut-button type="warning" @click="buyVisible = true"
         >兑换商品</nut-button
       >
-    </div>
+    </div> 
+      </nut-cell>
+    
     <nut-popup
       position="bottom"
       closeable
@@ -280,7 +280,7 @@ const close = () => {};
   }
   .confirmbut2 {
     position: absolute;
-    top: 80%;
+    top: 100%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
