@@ -12,6 +12,8 @@ declare module '@vue/runtime-core' {
     NutButton: typeof import('@nutui/nutui-taro')['Button']
     NutCalendar: typeof import('@nutui/nutui-taro')['Calendar']
     NutCell: typeof import('@nutui/nutui-taro')['Cell']
+    NutCheckbox: typeof import('@nutui/nutui-taro')['Checkbox']
+    NutCheckboxGroup: typeof import('@nutui/nutui-taro')['CheckboxGroup']
     NutCol: typeof import('@nutui/nutui-taro')['Col']
     NutCollapse: typeof import('@nutui/nutui-taro')['Collapse']
     NutCollapseItem: typeof import('@nutui/nutui-taro')['CollapseItem']
@@ -37,6 +39,7 @@ declare module '@vue/runtime-core' {
     NutTabPane: typeof import('@nutui/nutui-taro')['TabPane']
     NutTabs: typeof import('@nutui/nutui-taro')['Tabs']
     NutTag: typeof import('@nutui/nutui-taro')['Tag']
+    NutTextinput: typeof import('@nutui/nutui-taro')['Textinput']
     NutToast: typeof import('@nutui/nutui-taro')['Toast']
     NutUploader: typeof import('@nutui/nutui-taro')['Uploader']
   }
