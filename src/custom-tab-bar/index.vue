@@ -40,7 +40,7 @@ const list = [
     icon: h(Dshop)
   },
   {
-    pagePath: '/pages/community/community',
+    pagePath: '/pages/chat/chat',
     // selectedIconPath: '../images/tabbar_cart_on.png',
     // iconPath: '../images/tabbar_cart.png',
     text: '社群',
@@ -57,6 +57,10 @@ const list = [
 
 function tabSwitch(index, url) {
   setSelected(index)
+  if (url === '/pages/chat/chat') {
+    Taro.navigateTo({ url })
+    return
+  }
   Taro.switchTab({ url })
 }
 

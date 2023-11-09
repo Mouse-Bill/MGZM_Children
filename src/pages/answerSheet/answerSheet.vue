@@ -3,25 +3,47 @@
         <nut-space direction="vertical" fill>
 
 
-            <nut-cell title="000" sub-title="截止时间" desc="未结束" style="margin: 0%;">
+            <nut-cell title="000" desc="未结束" style="margin: 0%;">
                 <template #title>
-                    <span>Task {{ TaskId.taskId }}</span>
+                    <span>{{ TaskId.taskName }}</span>
+                </template>
+
+                <template #desc>
+                    <span>截止时间：{{ timeHandler(TaskId.taskEndTime) }}</span>
                 </template>
 
             </nut-cell>
             <nut-tabs v-model="tabsValue" :background="`rgba(255, 255, 255, 1)`">
-                <nut-tab-pane title="Q1" pane-key="0" style="padding: 2px;">
-                    <nut-cell>
+                <nut-tab-pane v-for="problem in problemList" :title="problem.problemTitle" pane-key="0"
+                    style="padding: 2px;">
+                    <nut-cell v-if="QuestionTypeHandler(problem.ttypeId) == `简答题`">
                         <nut-space direction="vertical" fill>
-                            <div>题目名称</div>
+                            <div>{{ handleContent(problem.problemContent) }}</div>
+                            <!-- <nut-tag plain type="warning">{{ problem.problemTag }}</nut-tag> -->
                             <nut-uploader :before-xhr-upload="beforeXhrUpload"></nut-uploader>
                             <nut-divider />
 
-                            <nut-cell title="选项01" style="margin: 0%;;" />
-                            <nut-cell title="选项02" style="margin: 0%;" />
-                            <nut-cell title="选项03" style="margin: 0%;" />
-                            <nut-cell title="选项04" style="margin: 0%;" />
+                            <!-- <nut-cell v-for="answer in handleAnswer(problem.problemContent)" :title="answer" style="margin: 0%;;" /> -->
 
+                        </nut-space>
+                    </nut-cell>
+
+                    <nut-cell v-if="QuestionTypeHandler(problem.ttypeId) == `单选题`">
+                        <nut-space direction="vertical" fill>
+                            <div>{{ handleContent(problem.problemContent) }}</div>
+                            <!-- <nut-tag plain type="warning">{{ problem.problemTag }}</nut-tag> -->
+                            <nut-divider />
+                            <!-- <nut-cell v-for="(answer,index) in handleAnswer(problem.problemContent)" @click="isChosen(answer)" :title="`${index + ' '+ answer}`" style="margin: 0%;;" /> -->
+                            <nut-checkbox-group v-model="state.checkboxgroup" @change="">
+                                <nut-space direction="vertical" fill>
+                                    <nut-checkbox icon-size="80" shape="button"
+                                        v-for="(answer, index) in handleAnswer(problem.problemContent)" @click="choice(index)"
+                                        :label="index" >{{ index + ' ' + answer }}</nut-checkbox>
+                                </nut-space>
+                                    
+                            </nut-checkbox-group>
+                            <nut-divider />
+                            <nut-button type='primary' @click="submit()">提交</nut-button>
                         </nut-space>
                     </nut-cell>
                 </nut-tab-pane>
@@ -37,20 +59,23 @@ import { ref } from 'vue'
 import childrenApi from '../../api/children.js';
 import Taro from '@tarojs/taro';
 
-const TaskId = ref('1');
+const TaskId = ref([]);
 
 const instance = Taro.getCurrentInstance();
+
+var state = ref({
+    checkboxgroup: ['1'],
+});
+
+const changeBox = () => {
+    // state.check01 = true;
+};
 
 console.log(instance);
 console.log(instance.router.params);
 TaskId.value = instance.router.params;
 console.log(TaskId.value);
 
-// useLoad((opsetions) => {
-//     console.log(opsetions);
-//     TaskId.value = opsetions;
-//     console.log(TaskId.value);
-// });
 
 const beforeXhrUpload = (taroUploadFile, options) => {
     options.problemId = '999',
@@ -62,31 +87,86 @@ const beforeXhrUpload = (taroUploadFile, options) => {
 const child = {
     ct_id: "99550e7e-7993-11ee-b962-0242ac120002",
     // u_id: "26adeeee-7994-11ee-b962-0242ac120002",
-
 };
 
+const tabsValue = ref('0');
 
-
-
-
-
-
-
-
-
-const submit = async () => {
-    Taro.navigateTo({
-        url: '/pages/taskupload/taskupload'
-    });
-};
-
-
+const problemList = ref([]);
 async function loadAnswerSheet() {
     await childrenApi.getTaskQuestionList(child).then((res) => {
         console.log(res);
+        problemList.value = res.data;
+        console.log(problemList.value);
     });
 }
 loadAnswerSheet();
+
+// ttypeId
+
+function timeHandler(time) {
+    let date = new Date(time);
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+    console.log(date)
+    return `${month}-${day} ${hour}:${minute}`;
+}
+
+function handleContent(ProblemContent) {
+    let JsonObject = JSON.parse(ProblemContent);
+    console.log("yyyyyyyyyyyyyyyyyyyyyy", ProblemContent);
+    return JsonObject.content;
+}
+
+
+
+
+function handleAnswer(ProblemContent) {
+    let JsonObject = JSON.parse(ProblemContent);
+    console.log("mmmmmmmmmmmmmm", ProblemContent);
+    console.log("NNNNNNNNNNNNNNN", JsonObject.answer);
+    return JsonObject.answer;
+}
+
+function QuestionTypeHandler(QuestionType) {
+    if (QuestionType == 1) {
+        return "简答题";
+    } else if (QuestionType == 2) {
+        return "单选题";
+    } else if (QuestionType == 3) {
+        return "多选题";
+    }
+}
+
+function choice (index) {
+    console.log(index);
+    answerSheet.answer = JSON.stringify({"answer":index});
+}
+
+const answerSheet ={
+        u_id: "26adeeee-7994-11ee-b962-0242ac120002",
+        ct_id: "99550e7e-7993-11ee-b962-0242ac120002",
+        problem_id: "999",
+        answer: "index",
+    }
+
+function submit() {
+    console.log(answerSheet);
+    console.log("提交中");
+    childrenApi.writeAnswerInfo(answerSheet).then((res) => {
+        console.log(res);
+    });
+}
+
+// const submit = async () => {
+//     Taro.navigateTo({
+//         url: '/pages/taskupload/taskupload'
+//     });
+// };
+
 
 
 

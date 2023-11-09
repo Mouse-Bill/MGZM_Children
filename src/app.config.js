@@ -9,6 +9,7 @@ export default defineAppConfig({
     'pages/goods/goods',
     'pages/taskupload/taskupload',
     'pages/answerSheet/answerSheet',
+    'pages/chat/chat',
     
   ],
   tabBar: {
