@@ -32,6 +32,7 @@
 import counter from '../../components/counter.vue'
 import { ref } from 'vue'
 import childrenApi from '../../api/children.js';
+import chatApi from '../../api/chat.js';
 import Taro from '@tarojs/taro';
 import { Image } from '@tarojs/components';
 
@@ -52,6 +53,18 @@ const chatMessage = ref([
 ]);
 
 
+const messageBody = {
+  u_id: "26adeeee-7994-11ee-b962-0242ac120002",
+  u_to_id: "1",
+  content: "hello",
+}
+
+
+const data = {
+  toUID: 2,
+  Msg: "hello",  
+}
+
 function sendMessage() {
   chatMessage.value.push({
     send_id: 1,
@@ -59,6 +72,15 @@ function sendMessage() {
     content: inputValue.value,
   });
   inputValue.value = "";
+
+  chatApi.uploadChatContent(messageBody).then((res) => {
+    console.log(res);
+  });
+
+  chatApi.wsTest(data).then((res) => {
+    console.log(res);
+  });
+
 }
 
 </script>
