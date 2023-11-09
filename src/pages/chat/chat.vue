@@ -38,7 +38,7 @@ import { Image } from '@tarojs/components';
 
 const u_id = 1;
 const inputValue = ref("");
-
+var wsIsOpen = false;
 const chatMessage = ref([
   {
     send_id: 1,
@@ -65,21 +65,54 @@ const data = {
   Msg: "hello",  
 }
 
-function sendMessage() {
+function sendMsgViaWS(data){
+  Taro.sendSocketMessage({
+    data: JSON.stringify(data),
+    success: function (res) {
+      console.log('发送成功')
+    },
+    fail: function (res) {
+      console.log('发送失败')
+    }
+  })
+}
+
+async function sendMessage() {
   chatMessage.value.push({
     send_id: 1,
     sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
     content: inputValue.value,
   });
+  data.Msg = inputValue.value;
   inputValue.value = "";
+  if (wsIsOpen){
+    sendMsgViaWS(data)
+  }else{
+    const WSTask = await Taro.connectSocket({
+      // url: 'ws://localhost:8080/server/'+Taro.getStorageSync('child').uid,
+      url: 'ws://localhost:8080/server/'+'1',
+    })
+    WSTask.onOpen(function (res) {
+      console.log('WebSocket连接已打开！')
+      wsIsOpen = true;
+      sendMsgViaWS(data)
+    })
+    WSTask.onMessage(function (res) {
+      console.log('收到服务器内容：' + res.data)
+      chatMessage.value.push({
+        send_id: res.data.toUID,
+        sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
+        content: JSON.parse(res.data).Msg,
+      });
+    })
+    WSTask.onError(function (res) {
+      console.log('WebSocket连接打开失败，请检查！')
+    })
+    WSTask.onClose(function (res) {
+      console.log('WebSocket 已关闭！')
+    })
 
-  chatApi.uploadChatContent(messageBody).then((res) => {
-    console.log(res);
-  });
-
-  chatApi.wsTest(data).then((res) => {
-    console.log(res);
-  });
+  }
 
 }
 

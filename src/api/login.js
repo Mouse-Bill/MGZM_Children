@@ -6,7 +6,7 @@ import Taro from '@tarojs/taro';
 const childrenLogin = async (data) => {
   try {
     const res = await http.post('/ChildrenLogin', data).then((res) => {
-      console.log(res);
+      console.log("got data",res);
       if (res.data.pass) {
         Taro.setStorageSync('token', res.data.token);
         Taro.setStorageSync('child', res.data.child);
