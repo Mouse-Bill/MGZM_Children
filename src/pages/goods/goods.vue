@@ -8,15 +8,18 @@
   />
 
   <nut-notify
-      @click="onClick"
-      @closed="onClosed"
-      :type="notifyState.state.type"
-      v-model:visible="notifyState.state.show"
-      :msg="notifyState.state.desc"
-    />
+    @click="onClick"
+    @closed="onClosed"
+    :type="notifyState.state.type"
+    v-model:visible="notifyState.state.show"
+    :msg="notifyState.state.desc"
+  />
 
-
-    <nut-image-preview :show="state.showPreview" :images="state.picUrl" @close="hideFn" />
+  <nut-image-preview
+    :show="state.showPreview"
+    :images="state.picUrl"
+    @close="hideFn"
+  />
   <!-- <nut-cell isLink title="展示图片预览" :showIcon="true" @click="showFn"></nut-cell> -->
 
   <view class="goods_info">
@@ -45,28 +48,28 @@
     </view>
   </view>
   <view class="text_container">
-      <nut-cell>
-        <nut-space direction="vertical" fill>
-          <div class="goods_name">{{ state.goods.goodsName }}</div>
-          <p class="goods_id">商品编号：{{ state.goods.goodsId }}</p>
-        </nut-space>
-      </nut-cell>
-      <nut-cell>
-        <nut-space direction="vertical" fill>
-          <div>
-            <p class="goods_num">商品库存：{{ state.goods.goodsNum }}</p>
-          </div>
-          <p class="goods_desc">商品描述：{{ state.goods.goodsDescription }}</p>
-        </nut-space>
-      </nut-cell>
-      <nut-cell>
-       <div class="confirmbut1">
-      <nut-button type="warning" @click="buyVisible = true"
-        >兑换商品</nut-button
-      >
-    </div> 
-      </nut-cell>
-    
+    <nut-cell>
+      <nut-space direction="vertical" fill>
+        <div class="goods_name">{{ state.goods.goodsName }}</div>
+        <p class="goods_id">商品编号：{{ state.goods.goodsId }}</p>
+      </nut-space>
+    </nut-cell>
+    <nut-cell>
+      <nut-space direction="vertical" fill>
+        <div>
+          <p class="goods_num">商品库存：{{ state.goods.goodsNum }}</p>
+        </div>
+        <p class="goods_desc">商品描述：{{ state.goods.goodsDescription }}</p>
+      </nut-space>
+    </nut-cell>
+    <nut-cell>
+      <div class="confirmbut1">
+        <nut-button type="warning" @click="buyVisible = true"
+          >兑换商品</nut-button
+        >
+      </div>
+    </nut-cell>
+
     <nut-popup
       position="bottom"
       closeable
@@ -94,6 +97,9 @@
           <div>
             <view class="textArea">剩余库存： {{ state.goods.goodsNum }}</view>
           </div>
+          <div>
+            <view class="textArea">您的积分： {{ state.points }}</view>
+          </div>
         </nut-col>
       </nut-row>
       <div class="confirmbut2">
@@ -103,14 +109,16 @@
       </div>
     </nut-popup>
   </view>
+
 </template>
   <script setup>
 import { ref, reactive, toRefs } from "vue";
 import { IconFont } from "@nutui/icons-vue-taro";
 import Taro from "@tarojs/taro";
+import mallApi from "../../api/mall";
+import childrenApi from "../../api/children";
 const base = ref(false);
 const routerParams = Taro.getCurrentInstance()?.router.params;
-const id = routerParams?.id;
 const buyVisible = ref(false);
 const visible1 = ref(false);
 const state = reactive({
@@ -118,41 +126,74 @@ const state = reactive({
   current: 1,
   goods: {},
   showPreview: false,
-  picUrl:[],
+  picUrl: [],
+  points: 50,
+  goodId: routerParams?.id,
+  child: {
+    u_id: "26adeeee-7994-11ee-b962-0242ac120002",
+  },
 });
 
-const showFn = () => {
-        state.showPreview = true;
-        console.log("showPic")
-        console.log(state.picUrl)
-      };
+// state.child.u_id = JSON.parse(wx.getStorageSync("child")).u_id
 
-      const hideFn = () => {
-        state.showPreview = false;
-        console.log("hidPic")
-      };
+async function getPoints() {
+  await childrenApi.getChildrenPoints(state.child).then((res) => {
+    console.log("points",res.data);
+    state.points = res.data;
+  });
+}
+
+async function getGoods() {
+  const body = {
+    goods_id: state.goodId,
+  };
+  console.log(body);
+  await mallApi.getOneGoods(body).then((res) => {
+    // console.log(res.data);
+    state.goods = res.data;
+  });
+}
+
+const showFn = () => {
+  state.showPreview = true;
+  console.log("showPic");
+  console.log(state.picUrl);
+};
+
+const hideFn = () => {
+  state.showPreview = false;
+  console.log("hidPic");
+};
 
 const notifyState = {
   state: reactive({
     show: false,
-    desc: '',
-    type: 'primary'
+    desc: "",
+    type: "primary",
   }),
   methods: {
-    cellClick(type,desc) {
+    cellClick(type, desc) {
       notifyState.state.show = true;
       notifyState.state.type = type;
       notifyState.state.desc = desc;
-    }
-  }
+    },
+  },
 };
+
+async function buyGoods(body) {
+  const res = await mallApi.buyGoods(body);
+  return res
+  // console.log("points:",res.data);
+}
 
 console.log(Taro.getStorageSync("goods"));
 // console.log(JSON.parse(Taro.getStorageSync("goods"))
 state.goods = JSON.parse(wx.getStorageSync("goods"));
-const jsonObject = { src: JSON.parse(wx.getStorageSync("goods")).goodsPicUrl };
-state.picUrl = [jsonObject]
+const jsonObject = { src: state.goods.goodsPicUrl };
+state.picUrl = [jsonObject];
 console.log(state.goods);
+getPoints();
+getGoods();
 
 const change = (index) => {
   state.current = index + 1;
@@ -166,11 +207,33 @@ const onCancel = () => {
 };
 
 const onOk = () => {
-  console.log("event ok");
-  notifyState.methods.cellClick('success', '您已成功兑换')
+  console.log("click ok");
   visible1.value = false;
   buyVisible.value = false;
-  console.log(JSON.parse(wx.getStorageSync("goods")).goodsId);
+  // console.log(JSON.parse(wx.getStorageSync("goods")).goodsId);
+  // console.log(JSON.parse(wx.getStorageSync("child")).uId);
+  const body = {
+    u_id: state.child.u_id,
+    goods_id: state.goodId,
+  };
+  const mess = buyGoods(body);
+  console.log(mess)
+  // console.log(mess.data)
+  if (-1 == mess.data) {
+    console.log("积分不足");
+    notifyState.methods.cellClick("danger", "您的积分不足。");
+  } else if (-2 == mess.data) {
+    console.log("商品缺货");
+    notifyState.methods.cellClick("danger", "商品缺货中。");
+  } else if (666 == mess.data) {
+    console.log("兑换成功");
+    notifyState.methods.cellClick("success", "您已成功兑换！");
+  } else {
+    console.log("兑换异常");
+    notifyState.methods.cellClick("danger", "兑换失败。");
+  }
+  getGoods();
+  getPoints();
 };
 
 // 底部操作按钮触发
