@@ -11,6 +11,13 @@
             "list": [
                 {
                     "name": "",
+                    "pathName": "pages/chat/chat",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": null
+                },
+                {
+                    "name": "",
                     "pathName": "pages/mine/mine",
                     "query": "",
                     "launchMode": "default",
