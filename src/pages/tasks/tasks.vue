@@ -49,7 +49,7 @@
                 style="color: blue;" @click="openSwitch"></nut-cell>
             </nut-col>
             <nut-col :span="8" style="text-align: center;">
-              <nut-cell title="历史任务" @click="click"></nut-cell>
+              <nut-cell title="历史任务" @click="viewHistory()"></nut-cell>
             </nut-col>
             <nut-col :span="8">
               <nut-cell :showIcon="true" :desc="state.date && state.date[0] ? `${state.date[1]}` : '请选择'"
@@ -61,7 +61,7 @@
 
             <nut-collapse-item :name="1" class="collapse-panel">
               <template #title>
-                {{ title.title1 }}
+                {{ title.title1 }}<nut-divider />
               </template>
 
               <nut-cell v-for="task in taskList.data" v-show="!checkSelective(task)">
@@ -87,7 +87,7 @@
                     <nut-button v-if="checkDone(task)" plain type="info" >
                       去回顾
                     </nut-button>
-                    <nut-button v-else="!checkDone(task)" type="info" @click="doTask(task.ctId)">
+                    <nut-button v-else="!checkDone(task)" type="info" @click="doTask(task.ctId,task.ctName,task.ctEndTime)">
                       去完成
                     </nut-button>
                   </nut-col>
@@ -155,15 +155,14 @@
                 </nut-row>
 
               </nut-cell>
-              <nut-divider />
             </nut-collapse-item>
           </nut-collapse>
         </nut-tab-pane>
         <nut-tab-pane title="反馈情况" pane-key="1"> Tab 2 </nut-tab-pane>
       </nut-tabs>
       <nut-calendar v-model="state" :visible="state.isVisible" :default-value="state.date" type="range"
-        :start-date="`2019-12-22`" :is-auto-back-fill="true" :end-date="`2021-01-08`" @close="closeSwitch"
-        @choose="setChooseValue" @select="select">
+        :start-date="`2023-01-01`"  :end-date="`2024-01-01`" @close=""
+        @choose="setChooseValue" @select="select" style="padding-bottom: 20%;">
       </nut-calendar>
     </div>
   </view>
@@ -187,7 +186,7 @@ const finish = ref({
   unFinish: "未完成",
 });
 // const child = Taro.getStorageSync('child');
-
+//:is-auto-back-fill="true"
 async function loadChildrenTaskList() {
   const list = await childrenApi.getChildrenTaskList(child)
   // console.log(list);
@@ -236,19 +235,12 @@ function timeHandler(time) {
   return `${month}-${day} ${hour}:${minute}`;
 }
 
-// function timeCanlender(time) {
-//   let date = new Date(time);
-//   let year = date.getFullYear();
-//   let month = date.getMonth();
-//   let day = date.getDate();
-//   return `${year}-${month}-${day}`;
-// }
 
-function doTask(taskId) {
+function doTask(taskId,taskName,taskEndTime) {
   Taro.navigateTo({
-    url: `/pages/answerSheet/answerSheet?taskId=${taskId}`,
+    url: `/pages/answerSheet/answerSheet?taskId=${taskId}&taskName=${taskName}&taskEndTime=${taskEndTime}`,
   });
-  console.log(taskId);
+  console.log(taskId,taskName,taskEndTime);
 }
 
 
@@ -269,7 +261,7 @@ const state = reactive({
 
 
 function updateTime() {
-  const dataList = childrenApi.getChildrenTaskInthisTime(child).then(res => {
+  const dataList = childrenApi.getChildrenTaskInThisTime(child).then(res => {
     console.log("99999999999999999999999999",res.data);
     const startDates = [];
     const endDates = [];
@@ -299,21 +291,38 @@ function updateTime() {
 
 updateTime();
 
+function viewHistory() {
+  console.log("查看历史任务");
+  state.isVisible = true;
+};
+
 
 function openSwitch() {
   state.isVisible = true;
-
-};
-
-function closeSwitch() {
-  state.isVisible = false;
 };
 
 function setChooseValue(param) {
-  state.date = [...[param[0][3], param[1][3]]];
+  state.date[0] = param[0][3];
+  state.date[1] = param[1][3];
+  console.log("setChooseValue", state.date[0]);
+  closeSwitch();
 };
 function select(param) {
   console.log(param);
+};
+
+async function closeSwitch() {
+  state.isVisible = false;
+  const body = {
+    u_id: child.u_id,
+    startTime: state.date[0],
+    endTime: state.date[1],
+  }
+  console.log("body", body);
+  const tmplist  = await childrenApi.getChildrenPastTaskList(body)
+  console.log("tmplist", tmplist);
+  taskList.value = tmplist;
+
 };
 
 //小导航栏
