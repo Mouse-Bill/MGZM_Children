@@ -6,7 +6,7 @@
       <nut-space :gutter="12"  center style="margin-top:15%">
         <nut-avatar size="large" >
         <img
-          src="https://img12.360buyimg.com/imagetools/jfs/t1/196430/38/8105/14329/60c806a4Ed506298a/e6de9fb7b8490f38.png"/>
+          src="https://img12.360buyimg.com/imagetools/jfs/t1/196430/38/8105/14329/60c806a4Ed506298a/e6de9fb7b8490f38.png" height="10px" width="10px" />
         </nut-avatar>
         <nut-space direction="vertical" fill>
             <nut-row style="font-size:18px;margin-top: 7px;">岳大鹏</nut-row>
