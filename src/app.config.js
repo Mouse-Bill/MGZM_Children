@@ -9,6 +9,8 @@ export default defineAppConfig({
     'pages/goods/goods',
     'pages/taskupload/taskupload',
     'pages/answerSheet/answerSheet',
+    'pages/pointSort/pointSort',
+    'pages/reviewAnswerSheet/reviewAnswerSheet',
     
   ],
   tabBar: {

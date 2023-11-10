@@ -1,5 +1,5 @@
 export default definePageConfig({
-    navigationBarTitleText: '答题',
+    navigationBarTitleText: '回顾',
     usingComponents: {},
   })
   

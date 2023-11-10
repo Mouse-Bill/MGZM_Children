@@ -2,7 +2,7 @@
     <nut-cell>
         <nut-space direction="vertical" fill>
 
-
+            <div class="top-card">
             <nut-cell title="000" desc="未结束" style="margin: 0%;">
                 <template #title>
                     <span>{{ TaskId.taskName }}</span>
@@ -13,6 +13,9 @@
                 </template>
 
             </nut-cell>
+        </div>
+
+            <div class="main-card">
             <nut-tabs v-model="tabsValue" :background="`rgba(255, 255, 255, 1)`">
                 <nut-tab-pane v-for="problem in problemList" :title="problem.problemTitle" pane-key="0"
                     style="padding: 2px;">
@@ -33,7 +36,7 @@
                             <div>{{ handleContent(problem.problemContent) }}</div>
                             <!-- <nut-tag plain type="warning">{{ problem.problemTag }}</nut-tag> -->
                             <nut-divider />
-                            <!-- <nut-cell v-for="(answer,index) in handleAnswer(problem.problemContent)" @click="isChosen(answer)" :title="`${index + ' '+ answer}`" style="margin: 0%;;" /> -->
+                            
                             <nut-checkbox-group v-model="state.checkboxgroup" @change="">
                                 <nut-space direction="vertical" fill>
                                     <nut-checkbox icon-size="80" shape="button"
@@ -43,12 +46,13 @@
                                     
                             </nut-checkbox-group>
                             <nut-divider />
-                            <nut-button type='primary' @click="submit()">提交</nut-button>
+                            <!-- <nut-button type='primary' @click="submit()">提交</nut-button> -->
                         </nut-space>
                     </nut-cell>
                 </nut-tab-pane>
                 <nut-tab-pane title="Q2" pane-key="1"> Tab 2 </nut-tab-pane>
             </nut-tabs>
+        </div>
         </nut-space>
 
     </nut-cell>
@@ -64,7 +68,7 @@ const TaskId = ref([]);
 const instance = Taro.getCurrentInstance();
 
 var state = ref({
-    checkboxgroup: ['1'],
+    checkboxgroup: ['A'],
 });
 
 const changeBox = () => {
@@ -89,6 +93,11 @@ const child = {
     // u_id: "20011",
 };
 
+const answer = {
+    ct_id: "11",
+    u_id: "20011",
+};
+
 const tabsValue = ref('0');
 
 const problemList = ref([]);
@@ -96,10 +105,23 @@ async function loadAnswerSheet() {
     await childrenApi.getTaskQuestionList(child).then((res) => {
         console.log(res);
         problemList.value = res.data;
-        console.log(problemList.value);
+        console.log("ooooooooooooooooo",problemList.value);
     });
 }
 loadAnswerSheet();
+
+
+const answerList = ref([]);
+async function loadAnswer() {
+    await childrenApi.getAnswerInfo(answer).then((res) => {
+        console.log(res);
+        answerList.value = res.data;
+        console.log("nnnnnnnnnnnnnnnnnnnn",answerList.value);
+    });
+    console.log("answerList.answer", answerList.answer);
+}
+loadAnswer();
+
 
 // ttypeId
 
@@ -122,14 +144,19 @@ function handleContent(ProblemContent) {
 }
 
 
-
-
 function handleAnswer(ProblemContent) {
     let JsonObject = JSON.parse(ProblemContent);
     console.log("mmmmmmmmmmmmmm", ProblemContent);
-    console.log("NNNNNNNNNNNNNNN", JsonObject.answer);
+    console.log("NNNNN--NNNNNNN", JsonObject.answer);
     return JsonObject.answer;
 }
+
+// function handleAnswerInfo(answer) {
+//     let JsonObject = JSON.parse(answer);
+//     console.log("answerJSON", answer);
+//     console.log("---------------", JsonObject.answer);
+//     return JsonObject.answer;
+// }
 
 function QuestionTypeHandler(QuestionType) {
     if (QuestionType == 1) {
@@ -143,7 +170,7 @@ function QuestionTypeHandler(QuestionType) {
 
 function choice (index) {
     console.log(index);
-    answerSheet.answer = JSON.stringify({"answer":index})
+    answerSheet.answer = JSON.stringify({"answer":index});
 }
 
 const answerSheet ={
@@ -153,21 +180,39 @@ const answerSheet ={
         answer: "index",
     }
 
-function submit() {
-    console.log(answerSheet);
-    console.log("提交中");
-    childrenApi.writeAnswerInfo(answerSheet).then((res) => {
-        console.log(res);
-    });
-}
-
-// const submit = async () => {
-//     Taro.navigateTo({
-//         url: '/pages/taskupload/taskupload'
+// function submit() {
+//     console.log(answerSheet);
+//     console.log("提交中");
+//     childrenApi.writeAnswerInfo(answerSheet).then((res) => {
+//         console.log(res);
 //     });
-// };
-
+// }
 
 
 
 </script>
+
+<style>
+.main-card {
+  margin: 35px;
+  padding: 1%;
+  background: #fff;
+  /* color: #506AE7; */
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, .1);
+  border-radius: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transition: all 0.15s ease;
+}
+
+.top-card {
+  margin: 35px;
+  padding: 1%;
+  background: #fff;
+  /* color: #506AE7; */
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, .1);
+  border-radius: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transition: all 0.15s ease;
+}
+
+</style>

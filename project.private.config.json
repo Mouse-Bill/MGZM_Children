@@ -11,6 +11,13 @@
             "list": [
                 {
                     "name": "",
+                    "pathName": "pages/pointSort/pointSort",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": null
+                },
+                {
+                    "name": "",
                     "pathName": "pages/mine/mine",
                     "query": "",
                     "launchMode": "default",
