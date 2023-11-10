@@ -11,7 +11,7 @@
             "list": [
                 {
                     "name": "",
-                    "pathName": "pages/chat/chat",
+                    "pathName": "pages/pointSort/pointSort",
                     "query": "",
                     "launchMode": "default",
                     "scene": null
