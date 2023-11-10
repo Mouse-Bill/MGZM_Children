@@ -163,7 +163,7 @@ const state = reactive({
   mainProductsToShow: [],
   points: 50,
   child : {
-    u_id: "26adeeee-7994-11ee-b962-0242ac120002",
+    u_id: "20011",
   },
 });
 

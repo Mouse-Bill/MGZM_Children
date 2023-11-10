@@ -16,7 +16,7 @@ import Taro from '@tarojs/taro';
 const child = {};
 
 // child.u_id = Taro.getStorageSync('child').u_id;
-child.u_id = "26adeeee-7994-11ee-b962-0242ac120002";
+child.u_id = "20011";
 
 //async function submit() {
 //  await childrenApi.getChildrenPoints(child).then(res => {

@@ -1,9 +1,11 @@
 <template>
   <view class="page">
-    <div class="chat">
+    <!---<div class="chat">-->
+    <scroll-view :scroll-y="true" style="height: 80%;" @scrolltoupper="upper" @scrolltolower="lower" @scroll="scroll"
+      :scroll-into-view="toView" :scroll-top="scrollTop">
       <div class="chat-message">
         <div v-for="(item, index) in chatMessage" :key="index">
-          <div v-if="item.send_id !== u_id" class="chat-left">
+          <div v-if="item.send_id === u_to_id" class="chat-left">
             <Image class="chat-avatar" :src="item.sender_avatar" />
             <div class="chat-content">
               <div class="chat-content-text">{{ item.content }}</div>
@@ -17,7 +19,8 @@
           </div>
         </div>
       </div>
-    </div>
+    </scroll-view>
+    <!--</div>-->
   </view>
 
   <nut-tabbar bottom placeholder safe-area-inset-bottom style="--nut-tabbar-border-top:2px solid #e3e3e3;">
@@ -37,12 +40,12 @@ import Taro from '@tarojs/taro';
 import { Image } from '@tarojs/components';
 import { onMounted } from '@vue/runtime-core';
 
-const u_id = 1;
+const u_to_id = "1";
 const inputValue = ref("");
 var wsIsOpen = false;
 Taro.connectSocket({
   // url: 'ws://localhost:8080/server/'+Taro.getStorageSync('child').uid,
-  url: 'ws://localhost:8080/server/' + "26adeeee-7994-11ee-b962-0242ac120002" + '/' + "1",
+  url: 'ws://localhost:8080/server/' + "20011" + '/' + "1",
   success: function (res) {
     console.log('WebSocket连接已打开！')
     wsIsOpen = true;
@@ -56,10 +59,17 @@ Taro.connectSocket({
 Taro.onSocketMessage(function (res) {
   console.log('收到服务器内容：' + res.data)
   chatMessage.value.push({
-    send_id: res.data.toUID,
+    send_id: JSON.parse(res.data).fromUID,
     sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
     content: JSON.parse(res.data).Msg,
   });
+  Taro.pageScrollTo({
+    scrollTop: 100000000000
+  });
+  Taro.pageScrollTo({
+    scrollTop: 100000000000
+  });
+  console.log(chatMessage.value)
 })
 // WSTask.onError(function (res) {
 //   console.log('WebSocket连接打开失败，请检查！')
@@ -71,12 +81,12 @@ Taro.onSocketMessage(function (res) {
 
 const chatMessage = ref([
   {
-    send_id: 1,
+    send_id: "1",
     sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
     content: "hello",
   },
   {
-    send_id: "26adeeee-7994-11ee-b962-0242ac120002",
+    send_id: "20011",
     sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
     content: "hello too",
   },
@@ -84,7 +94,7 @@ const chatMessage = ref([
 
 
 const messageBody = {
-  u_id: "26adeeee-7994-11ee-b962-0242ac120002",
+  u_id: "20011",
   u_to_id: "1",
   content: "hello",
 }
@@ -109,18 +119,24 @@ function sendMsgViaWS(data) {
 
 async function sendMessage() {
   chatMessage.value.push({
-    send_id: 1,
+    send_id: "20011",
     sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
     content: inputValue.value,
   });
   data.Msg = inputValue.value;
   inputValue.value = "";
+  Taro.pageScrollTo({
+    scrollTop: 100000000000
+  });
+  Taro.pageScrollTo({
+    scrollTop: 100000000000
+  });
   if (wsIsOpen) {
     sendMsgViaWS(data)
-  }else{
+  } else {
     const WSTask = await Taro.connectSocket({
       // url: 'ws://localhost:8080/server/'+Taro.getStorageSync('child').uid,
-      url: 'ws://localhost:8080/server/'+'1',
+      url: 'ws://localhost:8080/server/' + '1',
     })
     WSTask.onOpen(function (res) {
       console.log('WebSocket连接已打开！')
@@ -130,9 +146,16 @@ async function sendMessage() {
     WSTask.onMessage(function (res) {
       console.log('收到服务器内容：' + res.data)
       chatMessage.value.push({
-        send_id: res.data.toUID,
+        send_id: JSON.parse(res.data).fromUID,
         sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
         content: JSON.parse(res.data).Msg,
+      });
+
+      Taro.pageScrollTo({
+        scrollTop: 100000000000
+      });
+      Taro.pageScrollTo({
+        scrollTop: 100000000000
       });
     })
     WSTask.onError(function (res) {
