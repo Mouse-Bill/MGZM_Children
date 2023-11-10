@@ -46,7 +46,7 @@
     <nut-row :gutter="10">
       <nut-col :span="8">
         <div
-          :style="{ fontSize: '14px', marginLeft: '27px', color: '#909ca4' }"
+          :style="{ fontSize: '14px', marginLeft: '27px', color: '#ffd777' }"
         >
           可用积分
           <nut-divider direction="vertical" />
@@ -60,10 +60,10 @@
         </div>
       </nut-col>
       <nut-col :span="8">
-        <nut-button type="info" @click="tipsClick">积分规则</nut-button>
+        <nut-button type="warning" @click="tipsClick">积分规则</nut-button>
       </nut-col>
       <nut-col :span="8">
-        <nut-button type="primary" @click="rankClick">积分排行榜</nut-button>
+        <nut-button type="warning" @click="rankClick">积分排行榜</nut-button>
       </nut-col>
     </nut-row>
 
@@ -163,9 +163,10 @@ const state = reactive({
   mainProductsToShow: [],
   points: 50,
   child : {
-    u_id: "26adeeee-7994-11ee-b962-0242ac120002",
+    u_id: "20011",
   },
 });
+// state.child.u_id = JSON.parse(wx.getStorageSync("child")).u_id
 
 const handleChange1 = (val) => {
   if (val == "0") {
@@ -195,7 +196,7 @@ const tipsClick = () => {
 };
 
 const rankClick = () => {
-  // Taro.navigateTo({ url: "../goods/goods" });
+  Taro.navigateTo({ url: "../pointSort/pointSort" });
 };
 
 const goDetail = (goods) => {
@@ -241,12 +242,10 @@ async function getGoodsList() {
   state.mainProducts = res.data;
   state.mainProductsToShow = res.data;
   loading1.value = false;
-  console.log(state.loading)
 }
 
 getGoodsList();
 getPoints();
-// state.child.u_id = JSON.parse(wx.getStorageSync("child")).u_id
 </script>
   
   <style>
