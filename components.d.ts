@@ -23,7 +23,6 @@ declare module '@vue/runtime-core' {
     NutEllipsis: typeof import('@nutui/nutui-taro')['Ellipsis']
     NutGrid: typeof import('@nutui/nutui-taro')['Grid']
     NutGridItem: typeof import('@nutui/nutui-taro')['GridItem']
-    NutImage: typeof import('@nutui/nutui-taro')['Image']
     NutImagePreview: typeof import('@nutui/nutui-taro')['ImagePreview']
     NutInput: typeof import('@nutui/nutui-taro')['Input']
     NutMenu: typeof import('@nutui/nutui-taro')['Menu']

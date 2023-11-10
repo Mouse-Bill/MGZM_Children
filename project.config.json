@@ -9,15 +9,15 @@
         "enhance": false,
         "compileHotReLoad": false,
         "postcss": false,
-        "minified": true,
+        "minified": false,
         "babelSetting": {
             "ignore": [],
             "disablePlugins": [],
             "outputPath": ""
         },
-        "minifyWXSS": true,
+        "minifyWXSS": false,
         "minifyWXML": false,
-        "ignoreUploadUnusedFiles": true
+        "ignoreUploadUnusedFiles": false
     },
     "compileType": "miniprogram",
     "libVersion": "3.1.5",

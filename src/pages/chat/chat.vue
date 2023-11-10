@@ -1,5 +1,5 @@
 <template>
-  <view class="page">
+  <view class="page" v-if="isLoaded">
     <!---<div class="chat">-->
     <scroll-view :scroll-y="true" style="height: 80%;" @scrolltoupper="upper" @scrolltolower="lower" @scroll="scroll"
       :scroll-into-view="toView" :scroll-top="scrollTop">

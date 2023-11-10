@@ -5,7 +5,7 @@
         "compileHotReLoad": true,
         "urlCheck": false
     },
-    "libVersion": "3.1.5",
+    "libVersion": "3.2.0",
     "condition": {
         "miniprogram": {
             "list": [
