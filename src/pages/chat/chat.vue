@@ -1,9 +1,11 @@
 <template>
   <view class="page">
-    <div class="chat">
+    <!---<div class="chat">-->
+    <scroll-view :scroll-y="true" style="height: 80%;" @scrolltoupper="upper" @scrolltolower="lower" @scroll="scroll"
+      :scroll-into-view="toView" :scroll-top="scrollTop">
       <div class="chat-message">
         <div v-for="(item, index) in chatMessage" :key="index">
-          <div v-if="item.send_id !== u_id" class="chat-left">
+          <div v-if="item.send_id === u_to_id" class="chat-left">
             <Image class="chat-avatar" :src="item.sender_avatar" />
             <div class="chat-content">
               <div class="chat-content-text">{{ item.content }}</div>
@@ -17,7 +19,8 @@
           </div>
         </div>
       </div>
-    </div>
+    </scroll-view>
+    <!--</div>-->
   </view>
 
   <nut-tabbar bottom placeholder safe-area-inset-bottom style="--nut-tabbar-border-top:2px solid #e3e3e3;">
@@ -35,18 +38,54 @@ import childrenApi from '../../api/children.js';
 import chatApi from '../../api/chat.js';
 import Taro from '@tarojs/taro';
 import { Image } from '@tarojs/components';
+import { onMounted } from '@vue/runtime-core';
 
-const u_id = 1;
+const u_to_id = "1";
 const inputValue = ref("");
+var wsIsOpen = false;
+Taro.connectSocket({
+  // url: 'ws://localhost:8080/server/'+Taro.getStorageSync('child').uid,
+  url: 'ws://localhost:8080/server/' + "20011" + '/' + "1",
+  success: function (res) {
+    console.log('WebSocket连接已打开！')
+    wsIsOpen = true;
+  },
+  fail: function (res) {
+    console.log('WebSocket连接打开失败，请检查！')
+    wsIsOpen = false;
+  }
+})
+
+Taro.onSocketMessage(function (res) {
+  console.log('收到服务器内容：' + res.data)
+  chatMessage.value.push({
+    send_id: JSON.parse(res.data).fromUID,
+    sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
+    content: JSON.parse(res.data).Msg,
+  })
+  setTimeout(function () {
+    Taro.pageScrollTo({
+      scrollTop: 100000000
+    });
+  }, 10);
+  console.log(chatMessage.value)
+})
+// WSTask.onError(function (res) {
+//   console.log('WebSocket连接打开失败，请检查！')
+// })
+// WSTask.onClose(function (res) {
+//   console.log('WebSocket 已关闭！')
+// })
+
 
 const chatMessage = ref([
   {
-    send_id: 1,
+    send_id: "1",
     sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
     content: "hello",
   },
   {
-    send_id: 2,
+    send_id: "20011",
     sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
     content: "hello too",
   },
@@ -54,32 +93,76 @@ const chatMessage = ref([
 
 
 const messageBody = {
-  u_id: "26adeeee-7994-11ee-b962-0242ac120002",
+  u_id: "20011",
   u_to_id: "1",
   content: "hello",
 }
 
 
 const data = {
-  toUID: 2,
-  Msg: "hello",  
+  toUID: 1,
+  Msg: "hello",
 }
 
-function sendMessage() {
+function sendMsgViaWS(data) {
+  Taro.sendSocketMessage({
+    data: JSON.stringify(data),
+    success: function (res) {
+      console.log('发送成功')
+    },
+    fail: function (res) {
+      console.log('发送失败')
+    }
+  })
+}
+
+async function sendMessage() {
   chatMessage.value.push({
-    send_id: 1,
+    send_id: "20011",
     sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
     content: inputValue.value,
   });
+  data.Msg = inputValue.value;
   inputValue.value = "";
+  setTimeout(function () {
+    Taro.pageScrollTo({
+      scrollTop: 100000000
+    });
+  }, 1);
 
-  chatApi.uploadChatContent(messageBody).then((res) => {
-    console.log(res);
-  });
+  if (wsIsOpen) {
+    sendMsgViaWS(data)
+  } else {
+    const WSTask = await Taro.connectSocket({
+      // url: 'ws://localhost:8080/server/'+Taro.getStorageSync('child').uid,
+      url: 'ws://localhost:8080/server/' + '1',
+    })
+    WSTask.onOpen(function (res) {
+      console.log('WebSocket连接已打开！')
+      wsIsOpen = true;
+      sendMsgViaWS(data)
+    })
+    WSTask.onMessage(function (res) {
+      console.log('收到服务器内容：' + res.data)
+      chatMessage.value.push({
+        send_id: JSON.parse(res.data).fromUID,
+        sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
+        content: JSON.parse(res.data).Msg,
+      })
+      setTimeout(function () {
+        Taro.pageScrollTo({
+          scrollTop: 100000000
+        });
+      }, 2);
+    })
+    WSTask.onError(function (res) {
+      console.log('WebSocket连接打开失败，请检查！')
+    })
+    WSTask.onClose(function (res) {
+      console.log('WebSocket 已关闭！')
+    })
 
-  chatApi.wsTest(data).then((res) => {
-    console.log(res);
-  });
+  }
 
 }
 
@@ -141,9 +224,10 @@ function sendMessage() {
   padding: 3%;
   max-width: 70%;
 }
-.chat-content-text{
-  word-wrap:break-all;
-  word-break:break-all;
+
+.chat-content-text {
+  word-wrap: break-all;
+  word-break: break-all;
   max-width: 100%;
 }
 
@@ -158,9 +242,10 @@ function sendMessage() {
   margin: 1%;
   padding: 1%;
 }
+
 ::-webkit-scrollbar {
-width: 0;
-height: 0;
-color: transparent;
+  width: 0;
+  height: 0;
+  color: transparent;
 }
 </style>

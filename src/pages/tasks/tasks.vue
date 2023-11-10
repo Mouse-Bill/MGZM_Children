@@ -16,7 +16,7 @@
           <nut-grid :gutter="0" :column-num="2" :center="true" :border="false" class="menu-grid">
 
             <nut-grid-item>
-              <nut-button size="large" shape="round" type="warning" @click="">
+              <nut-button size="large" shape="round" type="warning" @click="goPointSort()">
                 <template #icon>
                   <Category></Category>
                 </template>
@@ -84,7 +84,7 @@
 
                   </nut-col>
                   <nut-col :span="8">
-                    <nut-button v-if="checkDone(task)" plain type="info" >
+                    <nut-button v-if="checkDone(task)" plain type="info" @click="reviewTask(task.ctId,task.ctName,task.ctEndTime)">
                       去回顾
                     </nut-button>
                     <nut-button v-else="!checkDone(task)" type="info" @click="doTask(task.ctId,task.ctName,task.ctEndTime)">
@@ -179,7 +179,7 @@ import Taro from '@tarojs/taro';
 
 const showIcon = ref(false);
 const child = {
-  u_id: "26adeeee-7994-11ee-b962-0242ac120002"
+  u_id: "20011"
 }
 const finish = ref({
   finish: "已完成",
@@ -243,6 +243,13 @@ function doTask(taskId,taskName,taskEndTime) {
   console.log(taskId,taskName,taskEndTime);
 }
 
+function reviewTask(taskId,taskName,taskEndTime) {
+  Taro.navigateTo({
+    url: `/pages/reviewAnswerSheet/reviewAnswerSheet?taskId=${taskId}&taskName=${taskName}&taskEndTime=${taskEndTime}`,
+  });
+  console.log(taskId,taskName,taskEndTime);
+}
+
 
 
 const onChange = (modelValue, currName, status) => {
@@ -259,6 +266,11 @@ const state = reactive({
   isVisible: false,
 });
 
+function goPointSort() {
+  Taro.navigateTo({
+    url: `/pages/pointSort/pointSort`,
+  });
+}
 
 function updateTime() {
   const dataList = childrenApi.getChildrenTaskInThisTime(child).then(res => {
