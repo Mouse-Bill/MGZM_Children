@@ -35,10 +35,40 @@ import childrenApi from '../../api/children.js';
 import chatApi from '../../api/chat.js';
 import Taro from '@tarojs/taro';
 import { Image } from '@tarojs/components';
+import { onMounted } from '@vue/runtime-core';
 
 const u_id = 1;
 const inputValue = ref("");
 var wsIsOpen = false;
+Taro.connectSocket({
+  // url: 'ws://localhost:8080/server/'+Taro.getStorageSync('child').uid,
+  url: 'ws://localhost:8080/server/' + "26adeeee-7994-11ee-b962-0242ac120002" + '/' + "1",
+  success: function (res) {
+    console.log('WebSocket连接已打开！')
+    wsIsOpen = true;
+  },
+  fail: function (res) {
+    console.log('WebSocket连接打开失败，请检查！')
+    wsIsOpen = false;
+  }
+})
+
+Taro.onSocketMessage(function (res) {
+  console.log('收到服务器内容：' + res.data)
+  chatMessage.value.push({
+    send_id: res.data.toUID,
+    sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
+    content: JSON.parse(res.data).Msg,
+  });
+})
+// WSTask.onError(function (res) {
+//   console.log('WebSocket连接打开失败，请检查！')
+// })
+// WSTask.onClose(function (res) {
+//   console.log('WebSocket 已关闭！')
+// })
+
+
 const chatMessage = ref([
   {
     send_id: 1,
@@ -46,7 +76,7 @@ const chatMessage = ref([
     content: "hello",
   },
   {
-    send_id: 2,
+    send_id: "26adeeee-7994-11ee-b962-0242ac120002",
     sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
     content: "hello too",
   },
@@ -61,11 +91,11 @@ const messageBody = {
 
 
 const data = {
-  toUID: 2,
-  Msg: "hello",  
+  toUID: 1,
+  Msg: "hello",
 }
 
-function sendMsgViaWS(data){
+function sendMsgViaWS(data) {
   Taro.sendSocketMessage({
     data: JSON.stringify(data),
     success: function (res) {
@@ -85,7 +115,7 @@ async function sendMessage() {
   });
   data.Msg = inputValue.value;
   inputValue.value = "";
-  if (wsIsOpen){
+  if (wsIsOpen) {
     sendMsgViaWS(data)
   }else{
     const WSTask = await Taro.connectSocket({
@@ -174,9 +204,10 @@ async function sendMessage() {
   padding: 3%;
   max-width: 70%;
 }
-.chat-content-text{
-  word-wrap:break-all;
-  word-break:break-all;
+
+.chat-content-text {
+  word-wrap: break-all;
+  word-break: break-all;
   max-width: 100%;
 }
 
@@ -191,9 +222,10 @@ async function sendMessage() {
   margin: 1%;
   padding: 1%;
 }
+
 ::-webkit-scrollbar {
-width: 0;
-height: 0;
-color: transparent;
+  width: 0;
+  height: 0;
+  color: transparent;
 }
 </style>
