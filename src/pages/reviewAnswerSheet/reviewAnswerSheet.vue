@@ -17,13 +17,14 @@
 
             <div class="main-card">
             <nut-tabs v-model="tabsValue" :background="`rgba(255, 255, 255, 1)`">
-                <nut-tab-pane v-for="problem in problemList" :title="problem.problemTitle" pane-key="0"
+                <nut-tab-pane v-for="(problem,index1) in problemList" :title="problem.problemTitle" pane-key="0"
                     style="padding: 2px;">
                     <nut-cell v-if="QuestionTypeHandler(problem.ttypeId) == `简答题`">
                         <nut-space direction="vertical" fill>
                             <div>{{ handleContent(problem.problemContent) }}</div>
                             <!-- <nut-tag plain type="warning">{{ problem.problemTag }}</nut-tag> -->
-                            <nut-uploader :before-xhr-upload="beforeXhrUpload"></nut-uploader>
+                            <!-- <nut-uploader :before-xhr-upload="beforeXhrUpload"></nut-uploader> -->
+                            <!-- <nut-image image="http://123.57.210.112:9001/my-bucket/20231107_1699326601_801.jpg"></nut-image> -->
                             <nut-divider />
 
                             <!-- <nut-cell v-for="answer in handleAnswer(problem.problemContent)" :title="answer" style="margin: 0%;;" /> -->
@@ -32,13 +33,13 @@
                     </nut-cell>
 
                     <nut-cell v-if="QuestionTypeHandler(problem.ttypeId) == `单选题`">
-                        <nut-space direction="vertical" fill>
+                        <nut-space direction="vertical" fill >
                             <div>{{ handleContent(problem.problemContent) }}</div>
                             <!-- <nut-tag plain type="warning">{{ problem.problemTag }}</nut-tag> -->
                             <nut-divider />
                             
-                            <nut-checkbox-group v-model="state.checkboxgroup" @change="">
-                                <nut-space direction="vertical" fill>
+                            <nut-checkbox-group v-model="checkboxgroups[index1]" @change="" >
+                                <nut-space direction="vertical" fill >
                                     <nut-checkbox icon-size="80" shape="button"
                                         v-for="(answer, index) in handleAnswer(problem.problemContent)" @click="choice(index)"
                                         :label="index" >{{ index + ' ' + answer }}</nut-checkbox>
@@ -62,14 +63,17 @@
 import { ref } from 'vue'
 import childrenApi from '../../api/children.js';
 import Taro from '@tarojs/taro';
+import { onMounted } from 'vue';
 
 const TaskId = ref([]);
 
 const instance = Taro.getCurrentInstance();
 
-var state = ref({
-    checkboxgroup: ['A'],
-});
+// var state = ref({
+//     checkboxgroups: ['A'],
+// });
+
+const checkboxgroups = [];
 
 const changeBox = () => {
     // state.check01 = true;
@@ -89,12 +93,12 @@ const beforeXhrUpload = (taroUploadFile, options) => {
 
 
 const child = {
-    ct_id: "11",
+    ct_id: "8",
     // u_id: "20011",
 };
 
 const answer = {
-    ct_id: "11",
+    ct_id: "8",
     u_id: "20011",
 };
 
@@ -105,7 +109,7 @@ async function loadAnswerSheet() {
     await childrenApi.getTaskQuestionList(child).then((res) => {
         console.log(res);
         problemList.value = res.data;
-        console.log("ooooooooooooooooo",problemList.value);
+        console.log(problemList.value);
     });
 }
 loadAnswerSheet();
@@ -114,13 +118,32 @@ loadAnswerSheet();
 const answerList = ref([]);
 async function loadAnswer() {
     await childrenApi.getAnswerInfo(answer).then((res) => {
-        console.log(res);
+        console.log("ddddddddddddddd",res);
+        const tmpList = res.data;
+        for(let i = 0; i < tmpList.length; i++) {
+            checkboxgroups.push(ref([JSON.parse(tmpList[i].answer).answer]));
+            console.log("ccccccccccccccccccc",checkboxgroups[i]);
+        }
+
         answerList.value = res.data;
-        console.log("nnnnnnnnnnnnnnnnnnnn",answerList.value);
+        console.log("nnnnnnnnnnnnnnnnnnnn",answerList);
+        // let JsonObject = JSON.stringify(answerList.value);
+        // console.log("7777777777",JsonObject);
+        // var jsonArray = JSON.parse(JsonObject);
+        // var answer = JSON.parse(jsonArray[0].answer);
+        // console.log("8888888",answer);
+        // var trueAnswer = JSON.parse(answer);
+        // var choice = trueAnswer.answer;
+        // console.log("9999",choice);
+
+        return answerList;
+        
     });
-    console.log("answerList.answer", answerList.answer);
 }
-loadAnswer();
+// loadAnswer();
+onMounted(async () => {
+    await loadAnswer();
+});
 
 
 // ttypeId
@@ -139,15 +162,15 @@ function timeHandler(time) {
 
 function handleContent(ProblemContent) {
     let JsonObject = JSON.parse(ProblemContent);
-    console.log("yyyyyyyyyyyyyyyyyyyyyy", ProblemContent);
+    console.log(ProblemContent);
     return JsonObject.content;
 }
 
 
 function handleAnswer(ProblemContent) {
     let JsonObject = JSON.parse(ProblemContent);
-    console.log("mmmmmmmmmmmmmm", ProblemContent);
-    console.log("NNNNN--NNNNNNN", JsonObject.answer);
+    console.log(ProblemContent);
+    console.log(JsonObject.answer);
     return JsonObject.answer;
 }
 
