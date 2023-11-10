@@ -11,7 +11,7 @@ export default defineAppConfig({
     'pages/answerSheet/answerSheet',
     'pages/pointSort/pointSort',
     'pages/reviewAnswerSheet/reviewAnswerSheet',
-    
+    'pages/chat/chat',
   ],
   tabBar: {
     custom: true,
