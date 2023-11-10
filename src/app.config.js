@@ -12,6 +12,7 @@ export default defineAppConfig({
     'pages/pointSort/pointSort',
     'pages/reviewAnswerSheet/reviewAnswerSheet',
     'pages/chat/chat',
+    'pages/searchGoods/searchGoods',
   ],
   tabBar: {
     custom: true,
@@ -40,10 +41,10 @@ export default defineAppConfig({
         pagePath: 'pages/mine/mine',
         text: '我的',
       },
-      {
-        pagePath: 'pages/goods/goods',
-        text: '商品详情',
-      },
+      // {
+      //   pagePath: 'pages/goods/goods',
+      //   text: '商品详情',
+      // },
       // {
       //   // iconPath: 'resource/hotest.png',
       //   // selectedIconPath: 'resource/hotest_on.png',

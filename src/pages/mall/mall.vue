@@ -50,7 +50,13 @@
         >
           可用积分
           <nut-divider direction="vertical" />
-          <a href="#" :style="{ color: '#1989fa' }">256</a>
+          <nut-countup
+            :init-num="0.0"
+            :end-num="state.points"
+            :speed="5"
+            :during="1"
+            :to-fixed="2"
+          ></nut-countup>
         </div>
       </nut-col>
       <nut-col :span="8">
@@ -60,6 +66,7 @@
         <nut-button type="primary" @click="rankClick">积分排行榜</nut-button>
       </nut-col>
     </nut-row>
+
     <nut-menu active-color="green">
       <nut-menu-item
         v-model="state.value1"
@@ -77,34 +84,40 @@
       v-for="(mainProduct, index) in state.mainProductsToShow"
       :key="index"
       class="main-product"
-    >
-      <div>
-        <img
-          src="https://storage.360buyimg.com/jdc-article/fristfabu.jpg"
-          alt=""
-        />
-      </div>
-      <div>
-        <view class="main-product-name">{{ mainProduct.goodsName }}</view>
-      </div>
-      <div>
-        所需积分：
-        <nut-price
-          :price="mainProduct.goodsPoints"
-          size="normal"
-          :decimal-digits="0"
-          :need-symbol="false"
-        />
-      </div>
-      <div>
-        <view class="comment">剩余库存： {{ mainProduct.goodsNum }}</view>
-      </div>
-      <nut-divider
-        content-position="left"
-        :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 0px' }"
-        >商品描述</nut-divider
-      >
-      <view class="comment">{{ mainProduct.goodsDescription }}</view>
+      @click="goDetail(state.mainProductsToShow[index])"
+    ><nut-skeleton width="350px" height="15px" round row="3"  title="false" v-model:loading= loading1>
+            <nut-row>
+        <nut-col :span="8">
+          <image
+            style="width: 100px; height: 100px; background: #fff"
+            :src="mainProduct.goodsPicUrl"
+            alt="图片加载失败"
+          />
+        </nut-col>
+        <nut-col :span="16">
+          <div>
+            <view class="main-product-name">{{ mainProduct.goodsName }}</view>
+          </div>
+          <div>
+            所需积分：
+            <nut-price
+              :price="mainProduct.goodsPoints"
+              size="normal"
+              :decimal-digits="0"
+              :need-symbol="false"
+            />
+          </div>
+          <div>
+            <nut-ellipsis
+              :content="mainProduct.goodsDescription"
+              direction="end"
+              rows="2"
+            ></nut-ellipsis>
+            <view class="comment">剩余库存： {{ mainProduct.goodsNum }}</view>
+          </div>
+        </nut-col>
+      </nut-row>
+    </nut-skeleton>
     </nut-cell>
   </nut-space>
 
@@ -112,23 +125,25 @@
     no-cancel-btn
     title="积分规则"
     :content="`<div style='text-align: left;'>
-    1. 积分获取：完成任务可以获得一定的积分
-    2. 兑换商品范围：积分可以用于兑换有库存的商品。
-    3. 兑换流程：浏览商城，选择您想要的商品，并确认兑换。兑换成功后，积分将被扣除，工作人员会通过电话联系您。
-    4. 积分结算：积分结算将每日进行一次，您获得的积分将会及时添加到您的账户中.
-    5. 积分规则限制：积分不可转让给其他用户.
-  </div>`"
+      1. 积分获取：完成任务可以获得一定的积分
+      2. 兑换商品范围：积分可以用于兑换有库存的商品。
+      3. 兑换流程：浏览商城，选择您想要的商品，并确认兑换。兑换成功后，积分将被扣除，工作人员会通过电话联系您。
+      4. 积分结算：积分结算将每日进行一次，您获得的积分将会及时添加到您的账户中.
+      5. 积分规则限制：积分不可转让给其他用户.
+    </div>`"
     v-model:visible="ruleVisble"
   />
 </template>
-
-<script setup>
+  
+  <script setup>
 import { reactive, ref, defineProps, defineEmits, computed } from "vue";
 import { Search2, Message } from "@nutui/icons-vue-taro";
 import Taro from "@tarojs/taro";
 import mallApi from "../../api/mall";
-const ruleVisble = ref(false);
-
+import childrenApi from "../../api/children";
+import { stat } from "fs";
+const ruleVisble= ref(false)
+const loading1= ref(true)
 const state = reactive({
   options1: [
     { text: "全部商品", value: 0 },
@@ -145,7 +160,11 @@ const state = reactive({
   value2: "a",
   searchValue: "",
   mainProducts: [],
-  mainProductsToShow: []
+  mainProductsToShow: [],
+  points: 50,
+  child : {
+    u_id: "20011",
+  },
 });
 
 const handleChange1 = (val) => {
@@ -154,17 +173,21 @@ const handleChange1 = (val) => {
     state.mainProductsToShow = state.mainProducts;
   } else if (val == "1") {
     console.log("有库存的商品");
-    state.mainProductsToShow = state.mainProducts.filter(item => item.goodsNum != 0);
+    state.mainProductsToShow = state.mainProducts.filter(
+      (item) => item.goodsNum != 0
+    );
   } else if (val == "2") {
     console.log("无库存的商品");
-    state.mainProductsToShow = state.mainProducts.filter(item => item.goodsNum == 0);
+    state.mainProductsToShow = state.mainProducts.filter(
+      (item) => item.goodsNum == 0
+    );
   } else {
     console.log("库存排序失败");
   }
 };
 
 const handleChange2 = (val) => {
-  getRankedGoodsList(val,state.mainProductsToShow);
+  getRankedGoodsList(val, state.mainProductsToShow);
 };
 
 const tipsClick = () => {
@@ -172,62 +195,61 @@ const tipsClick = () => {
 };
 
 const rankClick = () => {
-  Taro.navigateTo({ url: "../goods/goods" });
+  // Taro.navigateTo({ url: "../goods/goods" });
 };
 
-const goDetail = (id) => {
-  Taro.navigateTo({ url: "../goods/goods?id=" + id });
+const goDetail = (goods) => {
+  // Taro.setStorageSync("goods", JSON.stringify(goods));
+  // console.log(id);
+  const detailUrl = "/pages/goods/goods?id=" + goods.goodsId;
+  // console.log(detailUrl);
+  Taro.navigateTo({ url: detailUrl });
 };
 
 const search = function () {
   console.log(state.searchValue);
+  const detailUrl = "/pages/searchGoods/searchGoods?value=" + state.searchValue;
+  Taro.navigateTo({ url: detailUrl });
 };
 
 const getRankedGoodsList = (val, data) => {
-  if (val == 'a') {
-    console.log('默认排序');
+  if (val == "a") {
+    console.log("默认排序");
     getGoodsList();
-  } else if (val == 'b') {
-    console.log('积分从高到低排序');
-    data.sort((a,b)=>b.goodsPoints - a.goodsPoints);
-  } else if (val == 'c') {
-    console.log('积分从低到高排序');
-     ata.sort((a,b)=>a.goodsPoints - b.goodsPoints);
+  } else if (val == "b") {
+    console.log("积分从高到低排序");
+    data.sort((a, b) => b.goodsPoints - a.goodsPoints);
+  } else if (val == "c") {
+    console.log("积分从低到高排序");
+    data.sort((a, b) => a.goodsPoints - b.goodsPoints);
   } else {
-    console.log('积分排序失败');
-    data;
+    console.log("积分排序失败");
   }
+};
+
+async function getPoints() {
+  const tmppoints = await childrenApi.getChildrenPoints(state.child).then((res) => {
+    console.log(res.data);
+    state.points = res.data;
+  });
 }
 
 async function getGoodsList() {
+  loading1.value = true;
   const res = await mallApi.getGoodsList();
-  console.log(res);
+  console.log(res.data);
   state.mainProducts = res.data;
   state.mainProductsToShow = res.data;
+  loading1.value = false;
+  console.log(state.loading)
 }
+
 getGoodsList();
-
-// computed:{
-//   state.mainProductsToShow(){
-//     if(state.options1=='0'){
-//       console.log('全部商品');
-//       state.mainProductsToShow = state.mainProducts;
-//     }else if(state.options1=="1"){
-//       console.log('有库存的商品');
-//       state.mainProductsToShow = state.mainProducts.filter(item => item.goodsNum != 0);
-//     }
-//     else if(state.options1=="2"){
-//       console.log('无库存的商品');
-//       state.mainProductsToShow = state.mainProducts.filter(item => item.goodsNum == 0);
-//     }else{
-//       console.log("库存量排序失败");
-//     }
-//     return getRankedGoodsList(state.options2,state.mainProductsToShow);
-//   };
-// };
+getPoints();
+// state.child.u_id = JSON.parse(wx.getStorageSync("child")).u_id
 </script>
-
-<style>
+  
+  <style>
 .main-product {
   display: block;
 }
@@ -252,5 +274,3 @@ img {
   border-radius: 10px;
 }
 </style>
-
-
