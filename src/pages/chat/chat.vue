@@ -62,13 +62,12 @@ Taro.onSocketMessage(function (res) {
     send_id: JSON.parse(res.data).fromUID,
     sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
     content: JSON.parse(res.data).Msg,
-  });
-  Taro.pageScrollTo({
-    scrollTop: 100000000000
-  });
-  Taro.pageScrollTo({
-    scrollTop: 100000000000
-  });
+  })
+  setTimeout(function () {
+    Taro.pageScrollTo({
+      scrollTop: 100000000
+    });
+  }, 10);
   console.log(chatMessage.value)
 })
 // WSTask.onError(function (res) {
@@ -125,12 +124,12 @@ async function sendMessage() {
   });
   data.Msg = inputValue.value;
   inputValue.value = "";
-  Taro.pageScrollTo({
-    scrollTop: 100000000000
-  });
-  Taro.pageScrollTo({
-    scrollTop: 100000000000
-  });
+  setTimeout(function () {
+    Taro.pageScrollTo({
+      scrollTop: 100000000
+    });
+  }, 1);
+
   if (wsIsOpen) {
     sendMsgViaWS(data)
   } else {
@@ -149,14 +148,12 @@ async function sendMessage() {
         send_id: JSON.parse(res.data).fromUID,
         sender_avatar: "https://img.yzcdn.cn/vant/cat.jpeg",
         content: JSON.parse(res.data).Msg,
-      });
-
-      Taro.pageScrollTo({
-        scrollTop: 100000000000
-      });
-      Taro.pageScrollTo({
-        scrollTop: 100000000000
-      });
+      })
+      setTimeout(function () {
+        Taro.pageScrollTo({
+          scrollTop: 100000000
+        });
+      }, 2);
     })
     WSTask.onError(function (res) {
       console.log('WebSocket连接打开失败，请检查！')
