@@ -190,5 +190,4 @@ const beforeXhrUpload = (taroUploadFile, options) => {
 };
 
 
-
 </script>
