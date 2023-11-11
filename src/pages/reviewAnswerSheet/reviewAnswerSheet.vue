@@ -125,7 +125,7 @@ async function loadAnswer() {
     const tmpList = res.data;
     for (let i = 0; i < tmpList.length; i++) {
       // checkboxgroups.push(ref([JSON.parse(tmpList[i].answer).answer]));
-      state.value.checkboxGroups.push(['C']);
+      state.value.checkboxGroups.push([JSON.parse(tmpList[i].answer).answer]);
       console.log("ccccccccccccccccccc", state.value.checkboxGroups[i]);
     }
 
