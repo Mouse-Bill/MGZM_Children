@@ -178,9 +178,7 @@ const tabsValue = ref('0');
 import Taro from '@tarojs/taro';
 
 const showIcon = ref(false);
-const child = {
-  u_id: "20011"
-}
+const child = Taro.getStorageSync('child');
 const finish = ref({
   finish: "已完成",
   unFinish: "未完成",
@@ -199,18 +197,18 @@ async function getChildrenPoints() {
     console.log(res.data);
     points.value = res.data;
   })
-  console.log("66666666666666666666666666666666666",tmppoints);
+  console.log("Got Child Points",tmppoints);
   return points;
 };
 getChildrenPoints();
 
 
-const taskList = ref({});
-async function handler() {
+const taskList = ref([]);
+async function loadHandler() {
   taskList.value = await loadChildrenTaskList();
   // console.log("tasklist", taskList);
 }
-onMounted(handler);
+onMounted(loadHandler);
 
 
 const activeNames = ref([1, 2]);
@@ -226,26 +224,27 @@ const title = reactive({
 function timeHandler(time) {
   let date = new Date(time);
   let year = date.getFullYear();
-  let month = date.getMonth();
+  let month = date.getMonth() + 1;
+  console.log("----month",month);
   let day = date.getDate();
   let hour = date.getHours();
   let minute = date.getMinutes();
   let second = date.getSeconds();
-  console.log(date)
+  console.log("timeHandler", `${month}-${day} ${hour}:${minute}`,"time",time,"date",date,"year",year,"month",month,"day",day,"hour",hour,"minute",minute,"second",second,"time",time);
   return `${month}-${day} ${hour}:${minute}`;
 }
 
 
-function doTask(taskId,taskName,taskEndTime) {
+function doTask(taskId,taskName,taskDes,taskEndTime) {
   Taro.navigateTo({
-    url: `/pages/answerSheet/answerSheet?taskId=${taskId}&taskName=${taskName}&taskEndTime=${taskEndTime}`,
+    url: `/pages/answerSheet/answerSheet?taskId=${taskId}&taskName=${taskName}&taskEndTime=${taskEndTime}&taskDes=${taskDes}`,
   });
   console.log(taskId,taskName,taskEndTime);
 }
 
-function reviewTask(taskId,taskName,taskEndTime) {
+function reviewTask(taskId,taskName,taskDes,taskEndTime) {
   Taro.navigateTo({
-    url: `/pages/reviewAnswerSheet/reviewAnswerSheet?taskId=${taskId}&taskName=${taskName}&taskEndTime=${taskEndTime}`,
+    url: `/pages/reviewAnswerSheet/reviewAnswerSheet?taskId=${taskId}&taskName=${taskName}&taskEndTime=${taskEndTime}&taskDes=${taskDes}`,
   });
   console.log(taskId,taskName,taskEndTime);
 }
@@ -274,7 +273,8 @@ function goPointSort() {
 
 function updateTime() {
   const dataList = childrenApi.getChildrenTaskInThisTime(child).then(res => {
-    console.log("99999999999999999999999999",res.data);
+    console.log("Got Child Tasks in this batch time",res.data);
+    taskList.value.data = res.data;
     const startDates = [];
     const endDates = [];
     for (let i = 0; i < res.data.length; i++) {
@@ -296,7 +296,7 @@ function updateTime() {
     console.log("EndDates", endDates);
     state.date.push(`${startDates[0].getFullYear()}-${startDates[0].getMonth()}-${startDates[0].getDate()}`);
     state.date.push(`${endDates[0].getFullYear()}-${endDates[0].getMonth()}-${endDates[0].getDate()}`);
-    console.log("2222222222222222222222",state);
+    console.log("Task time set done",state);
   })
 
 };
