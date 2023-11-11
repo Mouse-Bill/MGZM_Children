@@ -35,9 +35,11 @@ const getChildrenPastTaskList = (data) => {
   return http.post('/getChildrenPastTaskList', data);
 }
 
+
 const getAnswerInfo = (data) => {
   return http.post('/getAnswerInfo', data);
 }
+
 
 
 
@@ -103,6 +105,10 @@ export default {
   getTaskQuestionList,
   writeAnswerInfo,
   getChildrenPastTaskList,
+<<<<<<< HEAD
+  getChildrenAvatar,
+=======
   getChildrenPointsRank,
   getAnswerInfo,
+>>>>>>> f5fb9a3cf7598448f9a21ea7d6108f8196dc3353
 };

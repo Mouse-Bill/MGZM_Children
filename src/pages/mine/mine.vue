@@ -6,11 +6,11 @@
       <nut-space :gutter="12"  center style="margin-top:15%">
         <nut-avatar size="large" >
         <img
-          src="https://img12.360buyimg.com/imagetools/jfs/t1/196430/38/8105/14329/60c806a4Ed506298a/e6de9fb7b8490f38.png" height="10px" width="10px" />
+          :src= "childAvatar" />
         </nut-avatar>
         <nut-space direction="vertical" fill>
-            <nut-row style="font-size:18px;margin-top: 7px;">岳大鹏</nut-row>
-            <nut-row style="font-size:14px" >云南省 保山市 昌宁县</nut-row>
+            <nut-row style="font-size:18px;margin-top: 7px;">{{child.cName}}</nut-row>
+            <nut-row style="font-size:14px" >{{child.cProvince}} {{child.cCity}} {{child.cDistrict}}</nut-row>
         </nut-space>
       </nut-space>
       <nut-cell class="menu-card" round-radius="18px">
@@ -26,7 +26,7 @@
         </nut-grid>
       </nut-cell>
           <nut-noticebar style="margin-top: 0"
-        text="在云南省保山市昌宁县，东北大学软件学院的同学们进行了“明光筑梦”计划“儿童之家”启用后的首次授课。授课内容涵盖理想信念教育、普通话推广、科学知识普及、未成年人保护等。同学们还走进大山，开展志愿服务帮扶活动。"
+        :text= "noticebarMessage"
         :background="`rgba(251, 248, 220, 1)`"
         :color="`#D9500B`"
       ></nut-noticebar> 
@@ -54,7 +54,6 @@
 
  </view>
  
- 
 </template>
 
 <script setup>
@@ -74,6 +73,33 @@ import {Download} from '@nutui/icons-vue-taro';
 import {Follow} from '@nutui/icons-vue-taro';
 import {Uploader} from '@nutui/icons-vue-taro';
 import {Message} from '@nutui/icons-vue-taro';
+
+import childrenApi from '../../api/children';
+import Taro from '@tarojs/taro';
+
+const tempChild = {
+  u_id :Taro.getStorageSync('child').uid ,
+}
+
+const child = ref(0);
+async function getChildren(){
+  await childrenApi.getChildrenInfo(tempChild).then(res =>{
+    console.log(res.data);
+    child.value = res.data;
+  });
+  return child;
+};
+getChildren();
+
+console.log("99999999999999999999999999")
+console.log(child);
+
+// const childAvatar = await childrenApi.getChildrenAvatar(child);
+const childAvatar = "https://img12.360buyimg.com/imagetools/jfs/t1/196430/38/8105/14329/60c806a4Ed506298a/e6de9fb7b8490f38.png" ;
+
+//TODO
+const noticebarMessage = "在云南省保山市昌宁县，东北大学软件学院的同学们进行了“明光筑梦”计划“儿童之家”启用后的首次授课。授课内容涵盖理想信念教育、普通话推广、科学知识普及、未成年人保护等。同学们还走进大山，开展志愿服务帮扶活动。";
+
 </script>
 
 <style>

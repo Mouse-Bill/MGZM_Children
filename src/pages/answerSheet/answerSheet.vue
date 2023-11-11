@@ -1,5 +1,5 @@
 <template>
-    <nut-cell>
+    <nut-cell v-if="isLoaded">
         <nut-space direction="vertical" fill>
 
 
@@ -14,14 +14,19 @@
 
             </nut-cell>
             <nut-tabs v-model="tabsValue" :background="`rgba(255, 255, 255, 1)`">
-                <nut-tab-pane v-for="problem in problemList" :title="problem.problemTitle" pane-key="0"
+                <nut-tab-pane v-for="(problem, index) in problemList" :title="problem.problemTitle" :pane-key="index"
                     style="padding: 2px;">
                     <nut-cell v-if="QuestionTypeHandler(problem.ttypeId) == `简答题`">
                         <nut-space direction="vertical" fill>
                             <div>{{ handleContent(problem.problemContent) }}</div>
-                            <!-- <nut-uploader :before-xhr-upload="beforeXhrUpload"></nut-uploader> -->
+                            <nut-uploader :before-xhr-upload="beforeXhrUpload" :auto-upload="false" 
+                                ref="uploadRef" maximum="9"></nut-uploader>
+                            <br />
+                            <nut-button type="success" size="small" @click="submitUpload">手动执行上传</nut-button>
+                            <nut-button type="warning" size="small" @click="clearUpload">手动清空上传</nut-button>
                             <nut-divider />
-                            <nut-button type='primary' @click="submit(problem.ttypeId)">去提交</nut-button>
+                            <!-- <nut-button type='primary' @click="submit(problem.ttypeId)">去提交</nut-button> -->
+                            <nut-button type='primary' @click="submit">去提交</nut-button>
                         </nut-space>
                     </nut-cell>
 
@@ -32,17 +37,16 @@
                             <nut-checkbox-group v-model="state.checkboxgroup" @change="">
                                 <nut-space direction="vertical" fill>
                                     <nut-checkbox icon-size="80" shape="button"
-                                        v-for="(answer, index) in handleAnswer(problem.problemContent)" @click="choice(index)"
-                                        :label="index" >{{ index + ' ' + answer }}</nut-checkbox>
+                                        v-for="(answer, index) in handleAnswer(problem.problemContent)"
+                                        @click="choice(index)" :label="index">{{ index + ' ' + answer }}</nut-checkbox>
                                 </nut-space>
-                                    
+
                             </nut-checkbox-group>
                             <nut-divider />
                             <nut-button type='primary' @click="submit(problem.ttypeId)">提交</nut-button>
                         </nut-space>
                     </nut-cell>
                 </nut-tab-pane>
-                <nut-tab-pane title="Q2" pane-key="1"> Tab 2 </nut-tab-pane>
             </nut-tabs>
         </nut-space>
 
@@ -53,6 +57,8 @@
 import { ref } from 'vue'
 import childrenApi from '../../api/children.js';
 import Taro from '@tarojs/taro';
+
+const isLoaded = ref(false);
 
 const TaskId = ref([]);
 
@@ -72,16 +78,9 @@ TaskId.value = instance.router.params;
 console.log(TaskId.value);
 
 
-const beforeXhrUpload = (taroUploadFile, options) => {
-    options.problemId = '999',
-        options.u_id = '20011',
-        childrenApi.uploadAnswerImg(taroUploadFile, options)
-};
-
-
 const child = {
-    ct_id: "11",
-
+    ct_id: "8",
+ d2b9334918226cc885000312477dfc4bd24bafe5
     // u_id: "20011",
 
 };
@@ -94,6 +93,7 @@ async function loadAnswerSheet() {
         console.log(res);
         problemList.value = res.data;
         console.log(problemList.value);
+        isLoaded.value = true;
     });
 }
 loadAnswerSheet();
@@ -138,32 +138,33 @@ function QuestionTypeHandler(QuestionType) {
     }
 }
 
-function choice (index) {
+function choice(index) {
     console.log(index);
-    answerSheet.answer = {"answer":index};
+    answerSheet.answer = { "answer": index };
 }
 
-const answerSheet ={
-        u_id: "20011",
-        ct_id: "11",
-        problem_id: "999",
-        answer: "index",
-    }
+const answerSheet = {
+    u_id: "20011",
+    ct_id: "8",
+    problem_id: "999",
+    answer: "index",
+}
 
 function submit(param) {
     console.log(param);
-    if(param == 2){
+    console.log(uploadRef);
+    if (param == 2) {
         console.log(answerSheet);
-    console.log("提交中");
-    childrenApi.writeAnswerInfo(answerSheet).then((res) => {
-        console.log(res);
-    });
-    }else if(param == 1){
+        console.log("提交中");
+        childrenApi.writeAnswerInfo(answerSheet).then((res) => {
+            console.log(res);
+        });
+    } else if (param == 1) {
         Taro.navigateTo({
-        url: '/pages/taskupload/taskupload'
-    });
+            url: '/pages/taskupload/taskupload'
+        });
     }
-    
+
 }
 
 // const submit = async () => {
@@ -172,6 +173,23 @@ function submit(param) {
 //     });
 // };
 
+
+
+// 图片提交
+const uploadRef = ref(null);
+
+const submitUpload = () => {
+    uploadRef.value[0].submit();
+};
+const clearUpload = () => {
+    uploadRef.value[0].clearUploadQueue();
+};
+
+const beforeXhrUpload = (taroUploadFile, options) => {
+    options.problemId = '9',
+        options.u_id = '20011',
+        childrenApi.uploadAnswerImg(taroUploadFile, options)
+};
 
 
 

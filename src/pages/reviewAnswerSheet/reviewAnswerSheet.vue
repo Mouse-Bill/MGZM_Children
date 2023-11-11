@@ -17,14 +17,14 @@
 
       <div class="main-card">
         <nut-tabs v-model="tabsValue" :background="`rgba(255, 255, 255, 1)`">
-          <nut-tab-pane v-for="(problem, index1) in problemList" :title="problem.problemTitle" pane-key="0"
+          <nut-tab-pane v-for="(problem, index1) in problemList" :title="problem.problemTitle" :pane-key="index"
             style="padding: 2px;">
             <nut-cell v-if="QuestionTypeHandler(problem.ttypeId) == `简答题`">
               <nut-space direction="vertical" fill>
                 <div>{{ handleContent(problem.problemContent) }}</div>
                 <!-- <nut-tag plain type="warning">{{ problem.problemTag }}</nut-tag> -->
                 <!-- <nut-uploader :before-xhr-upload="beforeXhrUpload"></nut-uploader> -->
-                <!-- <nut-image image="http://123.57.210.112:9001/my-bucket/20231107_1699326601_801.jpg"></nut-image> -->
+                <image v-for="img in pictrueList" :src="img"></image>
                 <nut-divider />
 
                 <!-- <nut-cell v-for="answer in handleAnswer(problem.problemContent)" :title="answer" style="margin: 0%;;" /> -->
@@ -38,7 +38,7 @@
                 <!-- <nut-tag plain type="warning">{{ problem.problemTag }}</nut-tag> -->
                 <nut-divider />
 
-                <nut-checkbox-group v-model="state.checkboxGroups[index1]" @change="">
+                <nut-checkbox-group v-model="state.checkboxGroups[index1]" @change="" disabled>
                   <nut-space direction="vertical" fill>
                     <nut-checkbox icon-size="80" shape="button"
                       v-for="(answer, index) in handleAnswer(problem.problemContent)" @click="choice(index)"
@@ -51,7 +51,6 @@
               </nut-space>
             </nut-cell>
           </nut-tab-pane>
-          <nut-tab-pane title="Q2" pane-key="1"> Tab 2 </nut-tab-pane>
         </nut-tabs>
       </div>
     </nut-space>
@@ -119,12 +118,15 @@ loadAnswerSheet();
 
 
 const answerList = ref([]);
+const pictrueList = ref([]);
 async function loadAnswer() {
   await childrenApi.getAnswerInfo(answer).then((res) => {
     console.log("ddddddddddddddd", res);
     const tmpList = res.data;
     for (let i = 0; i < tmpList.length; i++) {
       // checkboxgroups.push(ref([JSON.parse(tmpList[i].answer).answer]));
+      pictrueList.value.push(JSON.parse(tmpList[i].answer).imgUrl);
+      console.log("aaaaaaaaaaaaaaaaaaaa", pictrueList.value);
       state.value.checkboxGroups.push([JSON.parse(tmpList[i].answer).answer]);
       console.log("ccccccccccccccccccc", state.value.checkboxGroups[i]);
     }

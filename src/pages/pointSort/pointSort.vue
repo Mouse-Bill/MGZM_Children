@@ -3,9 +3,6 @@
     <ec-canvas id='mychart-dom-area' canvas-id='mychart-area' :ec="ec"></ec-canvas>
     
   </view>
-  <view class="chartLine">
-    <ec-canvas id='mychart-dom-line' canvas-id='mychart-line' :ec="ecline"></ec-canvas>
-  </view>
 </template>
 
 <script>
@@ -60,7 +57,10 @@ function initChart(canvas, width, height) {
       trigger: 'axis',
       // formatter: '{b0}<br />{a0}: {c0}',
       axisPointer: {
-        type: 'shadow'
+        type: 'cross',
+        label: {
+        backgroundColor: '#283b56'
+      }
       }
     
     },
@@ -83,6 +83,9 @@ function initChart(canvas, width, height) {
       {
         type: 'value',
         name: '积分',
+        // axisLabel: {
+        //   formatter: '{value} 分'
+        // }
       },
       {
         type: 'value',
@@ -90,9 +93,9 @@ function initChart(canvas, width, height) {
         min: 0,
         max: 10,
         interval: 1,
-        axisLabel: {
-          formatter: '{value} 位'
-        }
+        // axisLabel: {
+        //   formatter: '{value} 位'
+        // }
       }
     ],
     series: [
@@ -112,35 +115,6 @@ function initChart(canvas, width, height) {
   chart.setOption(option)
   return chart
 }
-
-// function initChartLine(canvas, width, height) {
-//   // const canvasLine = canvas/2;
-//   // const widthLine = width/2;
-//   // const heightLine = height/2;
-//   const chartLine = echarts.init(canvas, null, {
-//     width: width,
-//     height: height
-//   })
-//   canvasLine.setChart(chartLine)
-//   const lineOption = {
-//   xAxis: {
-//     type: 'category',
-//     data: jsonDX
-//   },
-//   yAxis: {
-//     type: 'value'
-//   },
-//   series: [
-//     {
-//       data: jsonDZ,
-//       type: 'line'
-//     }
-//   ]
-// };
-// chartLine.setOption(lineOption)
-//   return chartLine
-// }
-
 
 export default {
   data() {
@@ -170,20 +144,6 @@ export default {
   justify-content: space-between;
   box-sizing: border-box;
 }
-/* .chartLine {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-} */
-
 ec-canvas {
   width: 100%;
   height: 80%;
