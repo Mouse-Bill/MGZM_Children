@@ -5,13 +5,13 @@
         "compileHotReLoad": true,
         "urlCheck": false
     },
-    "libVersion": "3.1.5",
+    "libVersion": "3.2.0",
     "condition": {
         "miniprogram": {
             "list": [
                 {
                     "name": "",
-                    "pathName": "pages/chat/chat",
+                    "pathName": "pages/pointSort/pointSort",
                     "query": "",
                     "launchMode": "default",
                     "scene": null

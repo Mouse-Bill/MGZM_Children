@@ -7,6 +7,10 @@ const getChildrenPoints = (data) => {
   return http.post('/getChildrenPoints', data);
 };
 
+const getChildrenPointsRank = (data) => {
+  return http.post('/getChildrenPointsRank', data);
+};
+
 const getChildrenInfo = (data) => {
   return http.post('/getChildrenInfo', data);
 };
@@ -30,6 +34,12 @@ const writeAnswerInfo = (data) => {
 const getChildrenPastTaskList = (data) => {
   return http.post('/getChildrenPastTaskList', data);
 }
+
+const getAnswerInfo = (data) => {
+  return http.post('/getAnswerInfo', data);
+}
+
+
 
 const uploadAnswerImg = (taroUploadFile, options) => {
   // const uploadTask = taroUploadFile({
@@ -93,4 +103,6 @@ export default {
   getTaskQuestionList,
   writeAnswerInfo,
   getChildrenPastTaskList,
+  getChildrenPointsRank,
+  getAnswerInfo,
 };
