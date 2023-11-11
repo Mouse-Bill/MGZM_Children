@@ -54,7 +54,7 @@ const chatMessage = ref([
 
 
 const messageBody = {
-  u_id: "26adeeee-7994-11ee-b962-0242ac120002",
+  u_id: "20011",
   u_to_id: "1",
   content: "hello",
 }

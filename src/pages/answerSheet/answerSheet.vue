@@ -79,13 +79,13 @@ console.log(TaskId.value);
 
 const beforeXhrUpload = (taroUploadFile, options) => {
     options.problemId = '999',
-        options.u_id = '26adeeee-7994-11ee-b962-0242ac120002',
+        options.u_id = '20011',
         childrenApi.uploadAnswerImg(taroUploadFile, options)
 };
 
 
 const child = {
-    ct_id: "99550e7e-7993-11ee-b962-0242ac120002",
+    ct_id: "11",
     // u_id: "26adeeee-7994-11ee-b962-0242ac120002",
 };
 
@@ -147,8 +147,8 @@ function choice (index) {
 }
 
 const answerSheet ={
-        u_id: "26adeeee-7994-11ee-b962-0242ac120002",
-        ct_id: "99550e7e-7993-11ee-b962-0242ac120002",
+        u_id: "20011",
+        ct_id: "11",
         problem_id: "999",
         answer: "index",
     }

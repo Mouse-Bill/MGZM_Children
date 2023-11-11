@@ -9,7 +9,7 @@ import { ref } from 'vue';
 import childrenApi from '../../api/children.js';
 const beforeXhrUpload = (taroUploadFile, options) => {
   // options.problemId = '999',
-    options.u_id = '1',
+    options.u_id = '7',
     childrenApi.uploadAnswerImg(taroUploadFile, options)
 };
 </script>
