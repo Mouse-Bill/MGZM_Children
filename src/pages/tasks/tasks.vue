@@ -173,7 +173,7 @@
 <script setup>
 import { reactive, ref, onMounted, computed } from 'vue';
 import { Category, Check, MoreX, Clock } from '@nutui/icons-vue-taro';
-import childrenApi from '../../api/children';
+import childrenApi from '../../api/children.js';
 const tabsValue = ref('0');
 import Taro from '@tarojs/taro';
 
