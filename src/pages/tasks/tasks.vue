@@ -179,7 +179,7 @@ import Taro from '@tarojs/taro';
 
 const showIcon = ref(false);
 const child = {
-  u_id: "26adeeee-7994-11ee-b962-0242ac120002"
+  u_id: "20011"
 }
 const finish = ref({
   finish: "已完成",

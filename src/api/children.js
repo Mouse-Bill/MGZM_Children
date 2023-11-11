@@ -31,6 +31,10 @@ const getChildrenPastTaskList = (data) => {
   return http.post('/getChildrenPastTaskList', data);
 }
 
+const getChildrenAvatar = (data) => {
+  return http.post('/getChildrenAvatar',data);
+}
+
 const uploadAnswerImg = (taroUploadFile, options) => {
   // const uploadTask = taroUploadFile({
   //   url: 'http://localhost:8080/uploadTaskImg', //仅为示例，非真实的接口地址
@@ -93,4 +97,5 @@ export default {
   getTaskQuestionList,
   writeAnswerInfo,
   getChildrenPastTaskList,
+  getChildrenAvatar,
 };
