@@ -63,7 +63,7 @@ const uploadAnswerImg = (taroUploadFile, options) => {
   // });
   //taroUploadFile  是 Taro.uploadFile ， 你也可以自定义设置其它函数
   const uploadTask = taroUploadFile({
-    url: 'http://localhost:8080/uploadGoodsPictur',
+    url: 'http://localhost:8080/uploadGoodsPicture',
     filePath: options.taroFilePath,
     fileType: options.fileType,
     header: {
@@ -105,10 +105,6 @@ export default {
   getTaskQuestionList,
   writeAnswerInfo,
   getChildrenPastTaskList,
-<<<<<<< HEAD
-  getChildrenAvatar,
-=======
   getChildrenPointsRank,
   getAnswerInfo,
->>>>>>> f5fb9a3cf7598448f9a21ea7d6108f8196dc3353
 };
