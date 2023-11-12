@@ -233,7 +233,7 @@ const notifyState = {
 
 console.log(Taro.getStorageSync("goods"));
 // console.log(JSON.parse(Taro.getStorageSync("goods"))
-state.goods = JSON.parse(wx.getStorageSync("goods"));
+state.goods = JSON.parse(Taro.getStorageSync("goods"));
 const jsonObject = { src: state.goods.goodsPicUrl };
 state.picUrl = [jsonObject];
 console.log(state.goods);
