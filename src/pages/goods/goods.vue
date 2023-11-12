@@ -161,6 +161,7 @@ const base = ref(false);
 const routerParams = Taro.getCurrentInstance()?.router.params;
 const buyVisible = ref(false);
 const visible1 = ref(false);
+// console.log("goods_id")
 const state = reactive({
   imgUrl: "https://storage.360buyimg.com/jdc-article/NutUItaro34.jpg",
   current: 1,
@@ -177,6 +178,7 @@ const state = reactive({
   ruleVisble:false,
 });
 
+console.log(state.goodId)
 // state.child.u_id = JSON.parse(wx.getStorageSync("child")).u_id
 
 async function getPoints() {
@@ -191,7 +193,7 @@ async function getGoods() {
   const body = {
     goods_id: state.goodId,
   };
-  console.log(body);
+  console.log("hjsjdfj",body);
   await mallApi.getOneGoods(body).then((res) => {
     console.log("gggggggggggggggggggggggggggggg",res.data);
     state.goods = res.data;
@@ -231,9 +233,9 @@ const notifyState = {
   },
 };
 
-console.log(Taro.getStorageSync("goods"));
+// console.log(Taro.getStorageSync("goods"));
 // console.log(JSON.parse(Taro.getStorageSync("goods"))
-state.goods = JSON.parse(Taro.getStorageSync("goods"));
+// state.goods = JSON.parse(Taro.getStorageSync("goods"));
 const jsonObject = { src: state.goods.goodsPicUrl };
 state.picUrl = [jsonObject];
 console.log(state.goods);

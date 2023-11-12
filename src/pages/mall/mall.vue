@@ -11,12 +11,12 @@
 
     <nut-space direction="vertical" fill>
       <div>
-        <nut-swiper :init-page="page" :pagination-visible="true" pagination-color="#426543" auto-play="3000">
-          <nut-swiper-item>
+        <nut-swiper :init-page="page" :pagination-visible="true" pagination-color="#426543" auto-play="3000" height="300">
+          <!-- <nut-swiper-item>
             <img
               src="https://imgpp.ztupic.com/bup/so/20210113/4629d3a2e012bb1cc55554b61e082b4b-1.jpg?x-oss-process=image/resize,w_1024/quality,q_85/watermark,image_d2F0ZXIucG5n,type_ZmFuZ3poZW5naGVpdGk"
               alt="" />
-          </nut-swiper-item>
+          </nut-swiper-item> -->
           <nut-swiper-item>
             <img src="https://img.qiluyidian.net/1568599618636?imageView2/2/w/720/q/85" alt="" />
           </nut-swiper-item>
