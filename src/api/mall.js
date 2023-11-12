@@ -10,9 +10,13 @@ const getGoodsListByName = (data) =>{
 }
 
 const getOneGoods = (data) => {
-  return http.post('/getOneGoods', data);
+  return http.post('/getGoodsById', data);
 }
 
+
+const buyGoods = (data) =>{
+  return http.post('/buyGoods',data);
+}
 // const handleChange1 = (val) => {
 //   if (val == '0') {
 //     console.log('全部商品');
@@ -57,4 +61,5 @@ export default {
   getGoodsList,
   getOneGoods,
   getGoodsListByName,
+  buyGoods,
 };
