@@ -8,6 +8,11 @@ const getGoodsList = (data) => {
 const getGoodsListByName = (data) =>{
   return http.post("/searchGoods",data)
 }
+
+const getOneGoods = (data) => {
+  return http.post('/getOneGoods', data);
+}
+
 // const handleChange1 = (val) => {
 //   if (val == '0') {
 //     console.log('全部商品');
@@ -50,5 +55,6 @@ const getGoodsListByName = (data) =>{
 
 export default {
   getGoodsList,
+  getOneGoods,
   getGoodsListByName,
 };

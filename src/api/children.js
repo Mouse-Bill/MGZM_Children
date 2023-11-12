@@ -77,6 +77,7 @@ const uploadAnswerImg = (taroUploadFile, options) => {
       u_id: options.u_id,
       // problemId: options.problemId,
     },
+    formData: options.formData,
     name: options.name,
     success: function (res) {
       console.log('上传成功------', res);
