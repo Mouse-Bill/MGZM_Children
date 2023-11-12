@@ -184,7 +184,7 @@ useDidShow(() => {
   // tabbar.setSelected(3)
 
   updateTime()
-  console.log('onShow')
+  // console.log('onShow')
 })
 const showIcon = ref(false);
 const child = Taro.getStorageSync('child');
@@ -203,10 +203,10 @@ async function loadChildrenTaskList() {
 const points = ref(0);
 async function getChildrenPoints() {
   const tmppoints = await childrenApi.getChildrenPoints(child).then(res => {
-    console.log(res.data);
+    // console.log(res.data);
     points.value = res.data;
   })
-  console.log("Got Child Points",tmppoints);
+  // console.log("Got Child Points",tmppoints);
   return points;
 };
 getChildrenPoints();
@@ -234,12 +234,12 @@ function timeHandler(time) {
   let date = new Date(time);
   let year = date.getFullYear();
   let month = date.getMonth() + 1;
-  console.log("----month",month);
+  // console.log("----month",month);
   let day = date.getDate();
   let hour = date.getHours();
   let minute = date.getMinutes();
   let second = date.getSeconds();
-  console.log("timeHandler", `${month}-${day} ${hour}:${minute}`,"time",time,"date",date,"year",year,"month",month,"day",day,"hour",hour,"minute",minute,"second",second,"time",time);
+  // console.log("timeHandler", `${month}-${day} ${hour}:${minute}`,"time",time,"date",date,"year",year,"month",month,"day",day,"hour",hour,"minute",minute,"second",second,"time",time);
   return `${month}-${day} ${hour}:${minute}`;
 }
 
@@ -248,14 +248,14 @@ function doTask(taskId,taskName,taskDes,taskEndTime) {
   Taro.navigateTo({
     url: `/pages/answerSheet/answerSheet?taskId=${taskId}&taskName=${taskName}&taskEndTime=${taskEndTime}&taskDes=${taskDes}`,
   });
-  console.log(taskId,taskName,taskEndTime);
+  // console.log(taskId,taskName,taskEndTime);
 }
 
 function reviewTask(taskId,taskName,taskDes,taskEndTime) {
   Taro.navigateTo({
     url: `/pages/reviewAnswerSheet/reviewAnswerSheet?taskId=${taskId}&taskName=${taskName}&taskEndTime=${taskEndTime}&taskDes=${taskDes}`,
   });
-  console.log(taskId,taskName,taskEndTime);
+  // console.log(taskId,taskName,taskEndTime);
 }
 
 
@@ -282,7 +282,7 @@ function goPointSort() {
 
 function updateTime() {
   const dataList = childrenApi.getChildrenTaskInThisTime(child).then(res => {
-    console.log("Got Child Tasks in this batch time",res.data);
+    // console.log("Got Child Tasks in this batch time",res.data);
     taskList.value.data = res.data;
     const startDates = [];
     const endDates = [];
@@ -301,11 +301,11 @@ function updateTime() {
     endDates.sort((a, b) => {
       return a.getTime() < b.getTime() ? 1 : -1;
     });
-    console.log("StartDates", startDates);
-    console.log("EndDates", endDates);
+    // console.log("StartDates", startDates);
+    // console.log("EndDates", endDates);
     state.date.push(`${startDates[0].getFullYear()}-${startDates[0].getMonth()}-${startDates[0].getDate()}`);
     state.date.push(`${endDates[0].getFullYear()}-${endDates[0].getMonth()}-${endDates[0].getDate()}`);
-    console.log("Task time set done",state);
+    // console.log("Task time set done",state);
   })
 
 };
@@ -313,7 +313,7 @@ function updateTime() {
 updateTime();
 
 function viewHistory() {
-  console.log("查看历史任务");
+  // console.log("查看历史任务");
   state.isVisible = true;
 };
 
@@ -325,11 +325,11 @@ function openSwitch() {
 function setChooseValue(param) {
   state.date[0] = param[0][3];
   state.date[1] = param[1][3];
-  console.log("setChooseValue", state.date[0]);
+  // console.log("setChooseValue", state.date[0]);
   closeSwitch();
 };
 function select(param) {
-  console.log(param);
+  // console.log(param);
 };
 
 async function closeSwitch() {
@@ -339,9 +339,9 @@ async function closeSwitch() {
     startTime: state.date[0],
     endTime: state.date[1],
   }
-  console.log("body", body);
+  // console.log("body", body);
   const tmplist  = await childrenApi.getChildrenPastTaskList(body)
-  console.log("tmplist", tmplist);
+  // console.log("tmplist", tmplist);
   taskList.value = tmplist;
 
 };
@@ -349,10 +349,10 @@ async function closeSwitch() {
 //小导航栏
 const tab1value = ref(0);
 const back = () => {
-  console.log('Click Back');
+  // console.log('Click Back');
 };
 const tabTitle = () => {
-  console.log('Click Title');
+  // console.log('Click Title');
 };
 const changeTab = (tab) => {
   tab1value.value = tab.paneKey;
