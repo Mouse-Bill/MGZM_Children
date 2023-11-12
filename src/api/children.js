@@ -72,11 +72,7 @@ const uploadAnswerImg = (taroUploadFile, options) => {
       'Content-Type': 'multipart/form-data',
       ...options.headers,
     }, //
-    formData: {
-      //u_id: Taro.getStorageSync('child').u_id,
-      u_id: options.u_id,
-      problemId: options.problemId,
-    },
+    formData: options.formData,
     name: options.name,
     success: function (res) {
       console.log('上传成功------', res);

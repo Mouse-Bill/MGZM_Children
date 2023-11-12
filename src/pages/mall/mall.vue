@@ -155,7 +155,7 @@ const rankClick = () => {
 };
 
 const goDetail = (goods) => {
-  // Taro.setStorageSync("goods", JSON.stringify(goods));
+  Taro.setStorageSync("goods", JSON.stringify(goods));
   // console.log(id);
   const detailUrl = "/pages/goods/goods?id=" + goods.goodsId;
   // console.log(detailUrl);

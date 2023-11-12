@@ -84,10 +84,10 @@
 
                   </nut-col>
                   <nut-col :span="8">
-                    <nut-button v-if="checkDone(task)" plain type="info" @click="reviewTask(task.ctId,task.ctName,task.ctEndTime)">
+                    <nut-button v-if="checkDone(task)" plain type="info" @click="reviewTask(task.ctId,task.ctName,task.Des,task.ctEndTime)">
                       去回顾
                     </nut-button>
-                    <nut-button v-else="!checkDone(task)" type="info" @click="doTask(task.ctId,task.ctName,task.ctEndTime)">
+                    <nut-button v-else="!checkDone(task)" type="info" @click="doTask(task.ctId,task.ctName,task.Des,task.ctEndTime)">
                       去完成
                     </nut-button>
                   </nut-col>

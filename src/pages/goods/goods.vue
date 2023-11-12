@@ -193,7 +193,7 @@ async function getGoods() {
   };
   console.log(body);
   await mallApi.getOneGoods(body).then((res) => {
-    // console.log(res.data);
+    console.log("gggggggggggggggggggggggggggggg",res.data);
     state.goods = res.data;
   });
   if (state.goods.goodsNum <= 0) {
