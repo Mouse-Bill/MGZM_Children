@@ -173,10 +173,19 @@
 <script setup>
 import { reactive, ref, onMounted, computed } from 'vue';
 import { Category, Check, MoreX, Clock } from '@nutui/icons-vue-taro';
+import { useDidShow } from '@tarojs/taro'
 import childrenApi from '../../api/children';
-const tabsValue = ref('0');
 import Taro from '@tarojs/taro';
 
+const tabsValue = ref('0');
+
+useDidShow(() => {
+  const tabbar = Taro.getTabBar(Taro.getCurrentInstance().page)
+  // tabbar.setSelected(3)
+
+  updateTime()
+  console.log('onShow')
+})
 const showIcon = ref(false);
 const child = Taro.getStorageSync('child');
 const finish = ref({

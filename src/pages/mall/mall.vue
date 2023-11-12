@@ -18,25 +18,25 @@
       >
         <nut-swiper-item>
           <img
-            src="https://storage.360buyimg.com/jdc-article/NutUItaro34.jpg"
+            src="https://imgpp.ztupic.com/bup/so/20210113/4629d3a2e012bb1cc55554b61e082b4b-1.jpg?x-oss-process=image/resize,w_1024/quality,q_85/watermark,image_d2F0ZXIucG5n,type_ZmFuZ3poZW5naGVpdGk"
             alt=""
           />
         </nut-swiper-item>
         <nut-swiper-item>
           <img
-            src="https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg"
+            src="https://img.qiluyidian.net/1568599618636?imageView2/2/w/720/q/85"
             alt=""
           />
         </nut-swiper-item>
         <nut-swiper-item>
           <img
-            src="https://storage.360buyimg.com/jdc-article/welcomenutui.jpg"
+            src="https://img2.baidu.com/it/u=1510627751,1280776303&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=202"
             alt=""
           />
         </nut-swiper-item>
         <nut-swiper-item>
           <img
-            src="https://storage.360buyimg.com/jdc-article/fristfabu.jpg"
+            src="https://pic.ntimg.cn/file/20200820/30420428_124434205000_2.jpg"
             alt=""
           />
         </nut-swiper-item>
