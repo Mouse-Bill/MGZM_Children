@@ -21,8 +21,8 @@ const clearUpload = () => {
 
 const beforeXhrUpload = (taroUploadFile, options) => {
 
-  // options.problemId = '999',
-    options.u_id = '3',
+   options.problemId = '999',
+    options.u_id = '20011',
 
     childrenApi.uploadAnswerImg(taroUploadFile, options)
 };
