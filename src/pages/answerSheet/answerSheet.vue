@@ -5,11 +5,11 @@
 
       <nut-cell title="000" desc="未结束" style="margin: 0%;">
         <template #title>
-          <span>{{ TaskId.taskName }}</span>
+          <span>{{ taskInfo.taskName }}</span>
         </template>
 
         <template #desc>
-          <span>截止时间：{{ timeHandler(TaskId.taskEndTime) }}</span>
+          <span>截止时间：{{ timeHandler(taskInfo.taskEndTime) }}</span>
         </template>
 
       </nut-cell>
@@ -19,7 +19,7 @@
           <nut-cell v-if="QuestionTypeHandler(problem.ttypeId) == `简答题`">
             <nut-space direction="vertical" fill>
               <div>{{ handleContent(problem.problemContent) }}</div>
-              <nut-uploader :before-xhr-upload="beforeXhrUpload" :auto-upload="false" ref="uploadRef" :data="{problemId: problem.problemId,u_id: Taro.getStorageSync('child').u_id,ctId: TaskId.taskId}"
+              <nut-uploader :before-xhr-upload="beforeXhrUpload" :auto-upload="false" ref="uploadRef" :data="{problemId: problem.problemId,u_id: Taro.getStorageSync('child').u_id,ctId: taskInfo.taskId}"
                 maximum="9"></nut-uploader>
               <br />
               <nut-button type="success" size="small" @click="submitUpload">手动执行上传</nut-button>
@@ -60,7 +60,7 @@ import Taro from '@tarojs/taro';
 
 const isLoaded = ref(false);
 
-const TaskId = ref([]);
+const taskInfo = ref([]);
 
 const instance = Taro.getCurrentInstance();
 
@@ -74,20 +74,19 @@ const changeBox = () => {
 
 console.log(instance);
 console.log(instance.router.params);
-TaskId.value = instance.router.params;
-console.log(TaskId.value);
+taskInfo.value = instance.router.params;
+console.log(taskInfo.value);
 
 
-const child = {
-  ct_id: "8",
-  // u_id: "20011",
-};
+const taskRequestBody = {
+  ct_id: taskInfo.value.taskId,
+}
 
 const tabsValue = ref('0');
 
 const problemList = ref([]);
 async function loadAnswerSheet() {
-  await childrenApi.getTaskQuestionList(child).then((res) => {
+  await childrenApi.getTaskQuestionList(taskRequestBody).then((res) => {
     console.log(res);
     problemList.value = res.data;
     console.log(problemList.value);

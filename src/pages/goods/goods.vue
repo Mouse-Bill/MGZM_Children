@@ -1,10 +1,13 @@
 <template>
+  <view>
   <nut-dialog
     title="积分兑换"
     content="您确定要兑换该商品吗？（此操作不可逆）"
     v-model:visible="visible1"
     @cancel="onCancel"
     @ok="onOk"
+    
+    
   />
 
   <nut-notify
@@ -100,7 +103,7 @@
     <nut-popup
       position="bottom"
       closeable
-      :style="{ height: '20%' }"
+      :style="{ height: '30%' }"
       v-model:visible="buyVisible"
       class="pop_text"
     >
@@ -149,7 +152,7 @@
     </div>`"
     v-model:visible="state.ruleVisble"
   />
-
+</view>
 </template>
   <script setup>
 import { ref, reactive, toRefs } from "vue";
@@ -411,7 +414,7 @@ const close = () => {};
   }
   .confirmbut2 {
     position: absolute;
-    top: 100%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
