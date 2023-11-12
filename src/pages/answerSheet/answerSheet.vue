@@ -19,7 +19,8 @@
           <nut-cell v-if="QuestionTypeHandler(problem.ttypeId) == `简答题`">
             <nut-space direction="vertical" fill>
               <div>{{ handleContent(problem.problemContent) }}</div>
-              <nut-uploader :before-xhr-upload="beforeXhrUpload" :auto-upload="false" ref="uploadRef" :data="{problemId: problem.problemId,u_id: Taro.getStorageSync('child').u_id,ctId: taskInfo.taskId}"
+              <nut-uploader :before-xhr-upload="beforeXhrUpload" :auto-upload="false" ref="uploadRef"
+                :data="{ problemId: problem.problemId, u_id: Taro.getStorageSync('child').u_id, ctId: taskInfo.taskId }"
                 maximum="9"></nut-uploader>
               <br />
               <nut-button type="success" size="small" @click="submitUpload">手动执行上传</nut-button>
@@ -43,7 +44,7 @@
 
               </nut-checkbox-group>
               <nut-divider />
-              <nut-button type='primary' @click="submit(problem.ttypeId)">提交</nut-button>
+              <nut-button type='primary' @click="submit(problem.problemId)">提交</nut-button>
             </nut-space>
           </nut-cell>
         </nut-tab-pane>
@@ -138,29 +139,24 @@ function QuestionTypeHandler(QuestionType) {
 function choice(index) {
   console.log(index);
   answerSheet.answer = { "answer": index };
+  answerSheet.problem_id = problemList.value[tabsValue.value].problemId;
 }
 
 const answerSheet = {
-  u_id: "20011",
-  ct_id: "8",
-  problem_id: "999",
-  answer: "index",
+  u_id: Taro.getStorageSync('child').u_id,
+  ct_id: taskInfo.value.taskId,
+  problem_id: null,
+  answer: null,
 }
 
-function submit(param) {
-  console.log(param);
+function submit(problem_id) {
+  answerSheet.problem_id = problem_id
   console.log(uploadRef);
-  if (param == 2) {
-    console.log(answerSheet);
-    console.log("提交中");
-    childrenApi.writeAnswerInfo(answerSheet).then((res) => {
-      console.log(res);
-    });
-  } else if (param == 1) {
-    Taro.navigateTo({
-      url: '/pages/taskupload/taskupload'
-    });
-  }
+  console.log(answerSheet);
+  console.log("提交中");
+  childrenApi.writeAnswerInfo(answerSheet).then((res) => {
+    console.log(res);
+  });
 
 }
 
@@ -184,9 +180,9 @@ const clearUpload = () => {
 
 const beforeXhrUpload = (taroUploadFile, options) => {
   // options.problemId = problemId,
-    // options.u_id = Taro.getStorageSync('child').u_id,
-    // options.ct_id = TaskId.value.taskId,
-    console.log("options", options);
+  // options.u_id = Taro.getStorageSync('child').u_id,
+  // options.ct_id = TaskId.value.taskId,
+  console.log("options", options);
   childrenApi.uploadAnswerImg(taroUploadFile, options)
 };
 
