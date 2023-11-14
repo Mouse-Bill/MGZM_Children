@@ -27,7 +27,7 @@
               <nut-button type="warning" size="small" @click="clearUpload">手动清空上传</nut-button>
               <nut-divider />
               <!-- <nut-button type='primary' @click="submit(problem.ttypeId)">去提交</nut-button> -->
-              <nut-button type='primary' @click="submit">去提交</nut-button>
+              <nut-button type='primary' @click="">去提交</nut-button>
             </nut-space>
           </nut-cell>
 

@@ -5,11 +5,11 @@
       <div class="top-card">
         <nut-cell title="000" desc="未结束" style="margin: 0%;">
           <template #title>
-            <span>{{ TaskId.taskName }}</span>
+            <span>{{ taskInfo.taskName }}</span>
           </template>
 
           <template #desc>
-            <span>截止时间：{{ timeHandler(TaskId.taskEndTime) }}</span>
+            <span>截止时间：{{ timeHandler(taskInfo.taskEndTime) }}</span>
           </template>
 
         </nut-cell>
@@ -24,7 +24,9 @@
                 <div>{{ handleContent(problem.problemContent) }}</div>
                 <!-- <nut-tag plain type="warning">{{ problem.problemTag }}</nut-tag> -->
                 <!-- <nut-uploader :before-xhr-upload="beforeXhrUpload"></nut-uploader> -->
-                <image v-for="img in pictrueList" :src="img"></image>
+                <div style="padding-bottom: 20%;">
+                  <image v-for="img in pictrueList" :src="img"></image>
+                </div>
                 <nut-divider />
 
                 <!-- <nut-cell v-for="answer in handleAnswer(problem.problemContent)" :title="answer" style="margin: 0%;;" /> -->
@@ -66,12 +68,12 @@ import { onMounted } from 'vue';
 
 var isLoaded = ref(false);
 
-const TaskId = ref([]);
+const taskInfo = ref([]);
 
 const instance = Taro.getCurrentInstance();
 
 var state = ref({
-    checkboxGroups: [],
+  checkboxGroups: [],
 });
 
 // const checkboxgroups = [];
@@ -83,32 +85,31 @@ const changeBox = () => {
 
 console.log(instance);
 console.log(instance.router.params);
-TaskId.value = instance.router.params;
-console.log(TaskId.value);
+taskInfo.value = instance.router.params;
+console.log(taskInfo.value);
 
 
-const beforeXhrUpload = (taroUploadFile, options) => {
-  options.problemId = '999',
-    options.u_id = '20011',
-    childrenApi.uploadAnswerImg(taroUploadFile, options)
+// const beforeXhrUpload = (taroUploadFile, options) => {
+//   options.problemId = '999',
+//     options.u_id = '20011',
+//     childrenApi.uploadAnswerImg(taroUploadFile, options)
+// };
+
+
+const answerInfoRequestBody = {
+  ct_id: taskInfo.value.taskId,
+  u_id: Taro.getStorageSync('child').u_id,
 };
 
-
-const child = {
-  ct_id: "8",
-  // u_id: "20011",
-};
-
-const answer = {
-  ct_id: "8",
-  u_id: "20011",
-};
+const taskRequestBody = {
+  ct_id: taskInfo.value.taskId,
+}
 
 const tabsValue = ref('0');
 
 const problemList = ref([]);
 async function loadAnswerSheet() {
-  await childrenApi.getTaskQuestionList(child).then((res) => {
+  await childrenApi.getTaskQuestionList(taskRequestBody).then((res) => {
     console.log(res);
     problemList.value = res.data;
     console.log(problemList.value);
@@ -120,7 +121,7 @@ loadAnswerSheet();
 const answerList = ref([]);
 const pictrueList = ref([]);
 async function loadAnswer() {
-  await childrenApi.getAnswerInfo(answer).then((res) => {
+  await childrenApi.getAnswerInfo(answerInfoRequestBody).then((res) => {
     console.log("ddddddddddddddd", res);
     const tmpList = res.data;
     for (let i = 0; i < tmpList.length; i++) {
@@ -201,10 +202,10 @@ function choice(index) {
 }
 
 const answerSheet = {
-  u_id: "20011",
-  ct_id: "11",
-  problem_id: "999",
-  answer: "index",
+  u_id: Taro.getStorageSync('child').u_id,
+  ct_id: taskInfo.value.taskId,
+  problem_id: null,
+  answer: null,
 }
 
 // function submit() {
